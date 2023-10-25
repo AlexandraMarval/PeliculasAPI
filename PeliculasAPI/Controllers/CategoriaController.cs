@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Context;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Modelos;
+using PeliculasAPI.Servicios;
 
 namespace PeliculasAPI.Controllers
 {
@@ -10,24 +11,21 @@ namespace PeliculasAPI.Controllers
     [Route("api/controllers")]
     public class CategoriaController : ControllerBase
     {
-        private readonly PeliculaDbContext dbContext;
+        private readonly CategoriaServicio service;
 
-        public CategoriaController(PeliculaDbContext dbContext) 
+        public CategoriaController(CategoriaServicio service) 
         {
-            this.dbContext = dbContext;
+            this.service = service;
         }
         [HttpGet]
-        public async Task<ActionResult<List<CategoriaEntity>>> Get()
+        public async Task<ActionResult<List<CategoriaModel>>> Get()
         {
-            return await dbContext.Categorias.ToListAsync();
-        }
-
-        [HttpPost]
-        public async Task<ActionResult> Post(CategoriaEntity categoriaEntity)
-        {
-            dbContext.Add(categoriaEntity);
-            await dbContext.SaveChangesAsync();
-            return Ok();
+            var respuestaCategoria = await service.ObtenerCategoria();
+            if (respuestaCategoria == null)
+            {
+                return NotFound("No se encontro ningun resultado en su busqueda");
+            }
+            return Ok(respuestaCategoria);
         }
 
         [HttpGet]
