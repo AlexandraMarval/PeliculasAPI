@@ -48,7 +48,7 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        public async Task<CategoriaModel> ActualizarCategoria(int id, CategoriaActualizarModelo categoriaActualizarModelo)
+        public async Task<CategoriaModel> ActualizarCategoria(int id, ActualizarCategoriaModelo categoriaActualizarModelo)
         {
             var categoriaPorActualizar = await repositorio.ObtenerPorId(id);
 

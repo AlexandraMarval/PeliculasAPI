@@ -48,7 +48,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult> ActualizarCategoria(int id, [FromBody]CategoriaActualizarModelo categoriaActualizarModelo)
+        public async Task<ActionResult> ActualizarCategoria(int id, [FromBody]ActualizarCategoriaModelo categoriaActualizarModelo)
         {
             var categoria = await servicio.ActualizarCategoria(id, categoriaActualizarModelo);           
             return Ok(categoria);

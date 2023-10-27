@@ -1,6 +1,6 @@
 ﻿namespace PeliculasAPI.Modelos
 {
-    public class CategoriaActualizarModelo
+    public class ActualizarCategoriaModelo
     {
         public string Nombre {  get; set; }
     }
