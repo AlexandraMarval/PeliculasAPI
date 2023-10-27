@@ -54,8 +54,12 @@ namespace PeliculasAPI.Controllers
             return Ok(categoria);
         }
 
-        //[HttpDelete]
-        //public async Task
+        [HttpDelete("id:int")]
+        public async Task<ActionResult> EliminarCategoria(int id)
+        {
+            var categoria = await servicio.EliminarCategoria(id);
+            return Ok(categoria);
+        }
 
         //[HttpPost]
         //public IActionResult Post(CategoriaCreateModel categoriaCreateModel)

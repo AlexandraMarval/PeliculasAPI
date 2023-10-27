@@ -12,7 +12,7 @@ namespace PeliculasAPITests.Controllers
 {
     public class CategoriaControllerTests
     {
-        [Fact]
+        //[Fact]
         //public void ControllerCategoria_DeberiaRetornarUnOk()
         //{
         //    arrange Preparar

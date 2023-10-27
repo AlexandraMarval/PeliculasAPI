@@ -9,6 +9,6 @@ namespace PeliculasAPI.Servicios
         public Task<CategoriaModel> ObtenerCategoriaPorId(int id);
         public Task<CategoriaModel> CrearCategoria(CategoriaCreacionModel categoriaCreacionModel);
         public Task<CategoriaModel> ActualizarCategoria (int id, ActualizarCategoriaModelo categoriaActualizarModelo);
-        public Task<CategoriaModel> EliminarCategoria();
+        public Task<CategoriaModel> EliminarCategoria(int id);
     }
 }

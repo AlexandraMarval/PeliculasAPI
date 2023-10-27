@@ -64,5 +64,21 @@ namespace PeliculasAPI.Servicios
                 throw new Exception("No existe una categoria con ese id: ");
             }
         }
+
+        public async Task<CategoriaModel> EliminarCategoria(int id)
+        {
+            var categoriaPorEliminar = await repositorio.ObtenerPorId(id);
+
+            if(categoriaPorEliminar != null)
+            {
+                await repositorio.Elimimar(categoriaPorEliminar);
+                var caregoriaModelo = mapper.Map<CategoriaModel>(categoriaPorEliminar);
+                return caregoriaModelo;
+            }
+            else
+            {
+                throw new Exception("No existe ese id");
+            }
+        }
     }
 }

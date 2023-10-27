@@ -26,8 +26,8 @@ namespace PeliculasAPI.Repositorio
         }
         public async Task<TEntity> ObtenerPorId(int id)
         {
-            var entities = await dbSet.FindAsync(id);
-            return entities;
+            var entity = await dbSet.FindAsync(id);
+            return entity;
         }       
 
         public async Task Crear(TEntity entity)
