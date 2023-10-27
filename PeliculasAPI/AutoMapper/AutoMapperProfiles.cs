@@ -8,8 +8,9 @@ namespace PeliculasAPI.AutoMapper
     {
         public AutoMapperProfiles()
         {
-            CreateMap<CategoriaCreateModel, CategoriaEntity>().ReverseMap();
+            CreateMap<CategoriaCreacionModel, CategoriaEntity>().ReverseMap();
             CreateMap<CategoriaEntity, CategoriaModel>().ReverseMap();
+            CreateMap<CategoriaActualizarModelo, CategoriaEntity>().ReverseMap();
         }
     }
 }

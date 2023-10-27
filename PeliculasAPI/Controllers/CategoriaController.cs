@@ -8,34 +8,63 @@ using PeliculasAPI.Servicios;
 namespace PeliculasAPI.Controllers
 {
     [ApiController]
-    [Route("api/controllers")]
+    [Route("api/categoria")]
     public class CategoriaController : ControllerBase
     {
-        private readonly CategoriaServicio service;
+        private readonly ICategoriaServicio servicio;
 
-        public CategoriaController(CategoriaServicio service) 
+        public CategoriaController(ICategoriaServicio servicio ) 
         {
-            this.service = service;
+            this.servicio = servicio;
         }
-        [HttpGet]
-        public async Task<ActionResult<List<CategoriaModel>>> Get()
+
+        [HttpGet("id:int", Name = "obtenerCategoriaId")]
+        public async Task<ActionResult<CategoriaModel>> ObtenerId(int id)
         {
-            var respuestaCategoria = await service.ObtenerCategoria();
+            var resultadoId = await servicio.ObtenerCategoriaPorId(id);
+            if (resultadoId == null)
+            {
+                return NotFound("No se encontro ningún resultado");
+            }
+            return Ok(resultadoId);
+        }
+
+        [HttpGet(Name = "ObtenerListadoDeCategoria")]
+        public async Task<ActionResult> Get()
+        {
+            var respuestaCategoria = await servicio.ObtenerCategorias();
             if (respuestaCategoria == null)
             {
-                return NotFound("No se encontro ningun resultado en su busqueda");
+                return NotFound("No se encontro ningún resultado");
             }
             return Ok(respuestaCategoria);
         }
 
-        [HttpGet]
-        public IActionResult Post(CategoriaCreateModel categoriaCreateModel)
+        [HttpPost]
+        public async Task<ActionResult> CrearUnaCategoria([FromBody]CategoriaCreacionModel categoriaCreacionModel)
         {
-            var categoriaModel = new CategoriaModel
-            {
-               Nombre = categoriaCreateModel.Nombre,
-            };
-           return Ok(categoriaModel);
+           var categoria = await servicio.CrearCategoria(categoriaCreacionModel);
+            return CreatedAtRoute("obtenerCategoriaId", new { categoria.Id });
         }
+
+        [HttpPut]
+        public async Task<ActionResult> ActualizarCategoria(int id, [FromBody]CategoriaActualizarModelo categoriaActualizarModelo)
+        {
+            var categoria = await servicio.ActualizarCategoria(id, categoriaActualizarModelo);           
+            return Ok(categoria);
+        }
+
+        //[HttpDelete]
+        //public async Task
+
+        //[HttpPost]
+        //public IActionResult Post(CategoriaCreateModel categoriaCreateModel)
+        //{
+        //    var categoriaModel = new CategoriaModel
+        //    {
+        //       Nombre = categoriaCreateModel.Nombre,
+        //    };
+        //   return Ok(categoriaModel);
+        //}
     }
 }

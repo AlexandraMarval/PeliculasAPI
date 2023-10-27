@@ -1,4 +1,6 @@
 using PeliculasAPI.Context;
+using PeliculasAPI.Repositorio;
+using PeliculasAPI.Servicios;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,8 @@ builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+builder.Services.AddTransient<ICategoriaServicio, CategoriaServicio>();
+builder.Services.AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
 
 var app = builder.Build();
 
