@@ -4,6 +4,8 @@ namespace PeliculasAPI.Servicios
 {
     public interface IActorServicio
     {
-        public Task<ActorModelo> ObtenerActorPorId();
+        public Task<List<ActorModel>> ObtenerActores();
+        public Task<ActorModel> ObtenerActorPorId(int id);
+        public Task<ActorModel> CrearActor(ActorCreacionModel actorCreacionModel);
     }
 }
