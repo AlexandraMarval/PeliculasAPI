@@ -6,6 +6,11 @@ namespace PeliculasAPI.Controllers
     [Route("api/actores")]
     public class ActoresController : ControllerBase
     {
+        public ActoresController()
+        {
+            
+        }
 
+        public async
     }
 }
