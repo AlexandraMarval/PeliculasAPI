@@ -2,11 +2,10 @@
 
 namespace PeliculasAPI.Modelos
 {
-    public class ActorCreacionModel
+    public class CrearCategoriaModelo
     {
         [Required]
-        [StringLength(120)]
+        [StringLength(40)]
         public string Nombre { get; set; }
-        public DateTime FechaDeNacimiento { get; set; }
     }
 }

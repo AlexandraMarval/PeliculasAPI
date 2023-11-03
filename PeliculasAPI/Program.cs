@@ -12,6 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ICategoriaServicio, CategoriaServicio>();
+builder.Services.AddTransient<IActorServicio, ActorServicio>();
 builder.Services.AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
 
 var app = builder.Build();

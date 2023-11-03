@@ -2,10 +2,11 @@
 
 namespace PeliculasAPI.Modelos
 {
-    public class CategoriaCreacionModel
+    public class CategoriaModelo
     {
+        public int Id { get; set; }
         [Required]
         [StringLength(40)]
-        public string Nombre { get; set; }
+        public string Nombre { get; set;}
     }
 }

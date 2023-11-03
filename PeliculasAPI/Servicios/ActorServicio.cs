@@ -29,15 +29,15 @@ namespace PeliculasAPI.Servicios
             var actorModel = mapper.Map<ActorModel>(actor);
             return actorModel;
         }
-        public async Task<ActorModel> CrearActor(ActorCreacionModel actorCreacionModel)
+        public async Task<ActorModel> CrearActor(CrearActorModel CrearActorModel)
         {
-            var ActorExiste = await repositorio.BuscarPorCondicion(actor => actor.Nombre == actorCreacionModel.Nombre);
+            var ActorExiste = await repositorio.BuscarPorCondicion(actor => actor.Nombre == CrearActorModel.Nombre);
 
             if (!ActorExiste.Any())
             {
-                var actorCreacion = mapper.Map<ActorEntity>(actorCreacionModel);
-                await repositorio.Crear(actorCreacion);
-                var actorModel = mapper.Map<ActorModel>(actorCreacion);
+                var crearActor = mapper.Map<ActorEntity>(CrearActorModel);
+                await repositorio.Crear(crearActor);
+                var actorModel = mapper.Map<ActorModel>(crearActor);
                 return actorModel;
             }
             else 
@@ -46,5 +46,36 @@ namespace PeliculasAPI.Servicios
             }
         }
 
+        public async Task<ActorModel> ActualizarActor(int id, ActualizarActorModelo actualizarActorModelo)
+        {
+            var actualizarActor = await repositorio.ObtenerPorId(id);
+
+            if (actualizarActor != null)
+            {
+                actualizarActor.Nombre = actualizarActorModelo.Nombre;
+                await repositorio.Actualizar(actualizarActor);
+                var categoriaModelRespuesta = mapper.Map<ActorModel>(actualizarActor);
+                return categoriaModelRespuesta;
+            }
+            else
+            {
+                throw new Exception("No existe un actor con ese id: ");
+            }
+        }
+
+        public async Task<ActorModel> Eliminar(int id)
+        {
+            var eliminarActor = await repositorio.ObtenerPorId(id);
+            if (eliminarActor != null)
+            {
+                await repositorio.Elimimar(eliminarActor);
+                var actorModel = mapper.Map<ActorModel>(eliminarActor);
+                return actorModel;
+            }
+            else
+            {
+                throw new Exception("No existe un actor por el mismo id");
+            }
+        }
     }
 }

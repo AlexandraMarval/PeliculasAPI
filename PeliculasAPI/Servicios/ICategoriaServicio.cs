@@ -5,10 +5,10 @@ namespace PeliculasAPI.Servicios
 {
     public interface ICategoriaServicio
     {
-        public Task<List<CategoriaModel>> ObtenerCategorias();
-        public Task<CategoriaModel> ObtenerCategoriaPorId(int id);
-        public Task<CategoriaModel> CrearCategoria(CategoriaCreacionModel categoriaCreacionModel);
-        public Task<CategoriaModel> ActualizarCategoria (int id, ActualizarCategoriaModelo categoriaActualizarModelo);
-        public Task<CategoriaModel> EliminarCategoria(int id);
+        public Task<List<CategoriaModelo>> ObtenerCategorias();
+        public Task<CategoriaModelo> ObtenerCategoriaPorId(int id);
+        public Task<CategoriaModelo> CrearCategoria(CrearCategoriaModelo crearCategoriaModelo);
+        public Task<CategoriaModelo> ActualizarCategoria (int id, ActualizarCategoriaModelo actualizarCategoriaModelo);
+        public Task<CategoriaModelo> EliminarCategoria(int id);
     }
 }

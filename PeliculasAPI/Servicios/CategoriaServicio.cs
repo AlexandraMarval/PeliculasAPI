@@ -18,28 +18,28 @@ namespace PeliculasAPI.Servicios
             this.repositorio = repositorio;
         }
 
-        public async Task<List<CategoriaModel>> ObtenerCategorias()
+        public async Task<List<CategoriaModelo>> ObtenerCategorias()
         {
             var categoria = await repositorio.ObtenerTodo();
-            var categoriaModel = mapper.Map<List<CategoriaModel>>(categoria);
+            var categoriaModel = mapper.Map<List<CategoriaModelo>>(categoria);
             return categoriaModel;
         }
-        public async Task<CategoriaModel> ObtenerCategoriaPorId(int id)
+        public async Task<CategoriaModelo> ObtenerCategoriaPorId(int id)
         {
             var categoria = await repositorio.ObtenerPorId(id);
-            var categoriaModel = mapper.Map<CategoriaModel>(categoria);
+            var categoriaModel = mapper.Map<CategoriaModelo>(categoria);
             return categoriaModel;
         }
 
-        public async Task<CategoriaModel> CrearCategoria(CategoriaCreacionModel categoriaCreacionModel)
+        public async Task<CategoriaModelo> CrearCategoria(CrearCategoriaModelo crearCategoriaModelo)
         {
-            var categoriaExiste = await repositorio.BuscarPorCondicion(categoria => categoria.Nombre == categoriaCreacionModel.Nombre);
+            var categoriaExiste = await repositorio.BuscarPorCondicion(categoria => categoria.Nombre == crearCategoriaModelo.Nombre);
 
             if (!categoriaExiste.Any())
             {
-                var categoriaCreacion = mapper.Map<CategoriaEntity>(categoriaCreacionModel);
-                await repositorio.Crear(categoriaCreacion);
-                var categoriaModel = mapper.Map<CategoriaModel>(categoriaCreacion);
+                var crearCategoria = mapper.Map<CategoriaEntity>(crearCategoriaModelo);
+                await repositorio.Crear(crearCategoria);
+                var categoriaModel = mapper.Map<CategoriaModelo>(crearCategoria);
                 return categoriaModel;
             }
             else
@@ -48,15 +48,15 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        public async Task<CategoriaModel> ActualizarCategoria(int id, ActualizarCategoriaModelo categoriaActualizarModelo)
+        public async Task<CategoriaModelo> ActualizarCategoria(int id, ActualizarCategoriaModelo actualizaCategoriaModelo)
         {
-            var categoriaPorActualizar = await repositorio.ObtenerPorId(id);
+            var actualizarCategoria = await repositorio.ObtenerPorId(id);
 
-            if (categoriaPorActualizar != null)
+            if (actualizarCategoria != null)
             {
-                categoriaPorActualizar.Nombre = categoriaActualizarModelo.Nombre;
-                await repositorio.Actualizar(categoriaPorActualizar);
-                var categoriaModelRespuesta = mapper.Map<CategoriaModel>(categoriaPorActualizar);
+                actualizarCategoria.Nombre = actualizaCategoriaModelo.Nombre;
+                await repositorio.Actualizar(actualizarCategoria);
+                var categoriaModelRespuesta = mapper.Map<CategoriaModelo>(actualizarCategoria);
                 return categoriaModelRespuesta;
             }
             else
@@ -65,19 +65,19 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        public async Task<CategoriaModel> EliminarCategoria(int id)
+        public async Task<CategoriaModelo> EliminarCategoria(int id)
         {
-            var categoriaPorEliminar = await repositorio.ObtenerPorId(id);
+            var eliminarCategoria = await repositorio.ObtenerPorId(id);
 
-            if(categoriaPorEliminar != null)
+            if(eliminarCategoria != null)
             {
-                await repositorio.Elimimar(categoriaPorEliminar);
-                var caregoriaModelo = mapper.Map<CategoriaModel>(categoriaPorEliminar);
-                return caregoriaModelo;
+                await repositorio.Elimimar(eliminarCategoria);
+                var categoriaModelo = mapper.Map<CategoriaModelo>(eliminarCategoria);
+                return categoriaModelo;
             }
             else
             {
-                throw new Exception("No existe ese id");
+                throw new Exception("No existe un actor por el mismo id");
             }
         }
     }

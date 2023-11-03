@@ -19,7 +19,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("id:int", Name = "obtenerCategoriaId")]
-        public async Task<ActionResult<CategoriaModel>> ObtenerId(int id)
+        public async Task<ActionResult<CategoriaModelo>> ObtenerId(int id)
         {
             var resultadoId = await servicio.ObtenerCategoriaPorId(id);
             if (resultadoId == null)
@@ -41,7 +41,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CrearUnaCategoria([FromBody]CategoriaCreacionModel categoriaCreacionModel)
+        public async Task<ActionResult> CrearUnaCategoria([FromBody]CrearCategoriaModelo categoriaCreacionModel)
         {
            var categoria = await servicio.CrearCategoria(categoriaCreacionModel);
             return CreatedAtRoute("obtenerCategoriaId", new { categoria.Id });

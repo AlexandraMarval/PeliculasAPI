@@ -26,7 +26,7 @@ namespace PeliculasAPI.Controllers
             return Ok(actor);
         }
 
-        [HttpGet("int:id")]
+        [HttpGet("int:id", Name = "ObtenerActorPorId")]
         public async Task<ActionResult<ActorModel>> ObtenerPorId(int id)
         {
             var actor = await servicio.ObtenerActorPorId(id);
@@ -36,6 +36,30 @@ namespace PeliculasAPI.Controllers
             }
             return Ok(actor);
         }
-    }
 
+        [HttpPost]
+        public async Task<ActionResult> CrearUnActor([FromBody]CrearActorModel CrearActorModel)
+        {
+            var crearActor = await servicio.CrearActor(CrearActorModel);
+            if (crearActor == null)
+            {
+                return NotFound("Ya existe un actor con ese nombre");
+            }
+            return new CreatedAtRouteResult("ObtenerActorPorId", new { id = crearActor.Id});
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> ActualizarActor(int id, ActualizarActorModelo actualizarActorModelo)
+        {
+            var actualizarActor = await servicio.ActualizarActor(id, actualizarActorModelo);
+            return Ok(actualizarActor);
+        }
+
+        [HttpDelete]
+        public async Task<ActionResult> EliminarActor(int id)
+        {
+            var Actor = await servicio.Eliminar(id);
+            return Ok(Actor);
+        }
+    }
 }
