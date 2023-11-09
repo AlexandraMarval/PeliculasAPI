@@ -12,8 +12,8 @@ using PeliculasAPI.Context;
 namespace PeliculasAPI.Migrations
 {
     [DbContext(typeof(PeliculaDbContext))]
-    [Migration("20231027133707_TablaActoresIncial")]
-    partial class TablaActoresIncial
+    [Migration("20231108103727_Inicial")]
+    partial class Inicial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,7 +37,6 @@ namespace PeliculasAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Foto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")

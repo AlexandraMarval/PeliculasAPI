@@ -38,18 +38,18 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> CrearUnActor([FromBody]CrearActorModel CrearActorModel)
+        public async Task<ActionResult> CrearUnActor([FromForm]CrearActorModel crearActorModel)
         {
-            var crearActor = await servicio.CrearActor(CrearActorModel);
+            var crearActor = await servicio.CrearActor(crearActorModel);
             if (crearActor == null)
             {
                 return NotFound("Ya existe un actor con ese nombre");
             }
-            return new CreatedAtRouteResult("ObtenerActorPorId", new { id = crearActor.Id});
+            return new CreatedAtRouteResult("ObtenerActorPorId", new { id = crearActor.Id}, crearActor);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> ActualizarActor(int id, ActualizarActorModelo actualizarActorModelo)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ActualizarActor(int id, [FromForm]ActualizarActorModelo actualizarActorModelo)
         {
             var actualizarActor = await servicio.ActualizarActor(id, actualizarActorModelo);
             return Ok(actualizarActor);
