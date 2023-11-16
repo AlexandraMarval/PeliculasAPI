@@ -14,6 +14,7 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddTransient<ICategoriaServicio, CategoriaServicio>();
 builder.Services.AddTransient<IActorServicio, ActorServicio>();
 builder.Services.AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
+builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
 
 var app = builder.Build();
 

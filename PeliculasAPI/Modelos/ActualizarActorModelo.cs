@@ -7,5 +7,6 @@ namespace PeliculasAPI.Modelos
         [Required]
         [StringLength(120)]
         public string Nombre { get; set; }
+        public IFormFile Foto { get; set; }
     }
 }
