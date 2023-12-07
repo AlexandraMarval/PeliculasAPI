@@ -16,11 +16,19 @@ namespace PeliculasAPI.Servicios
             this.mapper = mapper;
         }
 
+        public async Task<List<PeliculaModelo>> ObtenerPelicula()
+        {
+            var pelicula = await repositorio.ObtenerTodo();
+            var peliculaModelo = mapper.Map<List<PeliculaModelo>>(pelicula);
+            return peliculaModelo;
+        }
+
         public async Task<PeliculaModelo> ObtenerPeliculaPorId(int id)
         {
             var pelicula = await repositorio.ObtenerPorId(id);
-            var peliculaModel = mapper.Map<PeliculaModelo>(pelicula);
-            return peliculaModel;
+            var peliculaModelo = mapper.Map<PeliculaModelo>(pelicula);
+            return peliculaModelo;
         }
+
     }
 }
