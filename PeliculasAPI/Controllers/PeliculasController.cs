@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PeliculasAPI.Modelos;
 using PeliculasAPI.Servicios;
 
 namespace PeliculasAPI.Controllers
@@ -12,6 +13,17 @@ namespace PeliculasAPI.Controllers
         public PeliculasController(IPeliculaServicio servicio)
         {
             this.servicio = servicio;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<PeliculaModelo>> ObtenerId(int id)
+        {
+            var pelicula = servicio.ObtenerPeliculaPorId(id);
+            if (pelicula == null)
+            {
+                return BadRequest("No se encontro resultado");
+            }
+            return Ok(pelicula);
         }
 
     }
