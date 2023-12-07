@@ -1,4 +1,8 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using PeliculasAPI.Ayudantes;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Repositorio;
@@ -10,18 +14,24 @@ namespace PeliculasAPI.Servicios
         private readonly IMapper mapper;
         private readonly IRepositorio<ActorEntity> repositorio;
         private readonly IAlmacenadorArchivos almacenadorArchivos;
+        private readonly IHttpContextAccessor httpContextAccessor;
         private readonly string contenedor = "actores";
 
-        public ActorServicio(IMapper mapper,IRepositorio<ActorEntity> repositorio, IAlmacenadorArchivos almacenadorArchivos) 
+        public ActorServicio(IMapper mapper,IRepositorio<ActorEntity> repositorio, IAlmacenadorArchivos almacenadorArchivos, IHttpContextAccessor httpContextAccessor) 
         {          
             this.mapper = mapper;
             this.repositorio = repositorio;
             this.almacenadorArchivos = almacenadorArchivos;
+            this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<ActorModel>> ObtenerActores()
+        public async Task<List<ActorModel>> ObtenerActores(PaginacionModel paginacionModel)
         {
-            var actor = await repositorio.ObtenerTodo();
+            var queryable = await repositorio.AsQueryable();
+
+            await httpContextAccessor.HttpContext.InsertarParametrosPaginacion(queryable, paginacionModel.cantidadRegistrosPorPagina);
+
+            var actor = await queryable.Paginar(paginacionModel).ToListAsync();
             var actorModel = mapper.Map<List<ActorModel>>(actor);
             return actorModel;
         }      
@@ -40,7 +50,7 @@ namespace PeliculasAPI.Servicios
             {
                 var crearActor = mapper.Map<ActorEntity>(crearActorModel);
 
-                if (crearActorModel.Foto != null)
+                if (crearActor.Foto != null)
                 {
                     using (var memoryStream = new MemoryStream())
                     {
@@ -67,8 +77,6 @@ namespace PeliculasAPI.Servicios
             if (actualizarActor != null)
             {
                 actualizarActor.Nombre = actualizarActorModelo.Nombre;
-
-                actualizarActor = mapper.Map<ActorEntity>(actualizarActor);
 
                 if (actualizarActorModelo.Foto != null)
                 {
@@ -103,6 +111,29 @@ namespace PeliculasAPI.Servicios
             {
                 throw new Exception("No existe un actor por el mismo id");
             }
+        }
+
+        public async Task<ActorPatchModelo> ObtenerActorPatchId(int id, JsonPatchDocument<ActorPatchModelo> pathDocument)
+        {
+            var entidadDb = await repositorio.ObtenerPorId(id);
+
+            if (pathDocument == null)
+            {
+                throw new Exception("El jsonPatchDocument es nulo");
+            }
+
+            if(entidadDb == null)
+            {
+                throw new Exception("No se encontró ninguna entidad con el id proporcionado");
+            }                  
+            var actorPatchModel = mapper.Map<ActorPatchModelo>(entidadDb);
+            pathDocument.ApplyTo(actorPatchModel);
+
+            entidadDb = mapper.Map<ActorEntity>(actorPatchModel);
+
+            await repositorio.Actualizar(entidadDb);
+            
+            return actorPatchModel;
         }
     }
 }

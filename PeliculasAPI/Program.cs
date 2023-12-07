@@ -7,14 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSqlServer<PeliculaDbContext>(builder.Configuration.GetConnectionString("DefaultConnection"));
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddTransient<ICategoriaServicio, CategoriaServicio>();
-builder.Services.AddTransient<IActorServicio, ActorServicio>();
-builder.Services.AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
-builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
+builder.Services
+    .AddEndpointsApiExplorer()
+    .AddSwaggerGen()
+    .AddTransient<ICategoriaServicio, CategoriaServicio>()
+    .AddTransient<IActorServicio, ActorServicio>()
+    .AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
+//builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
+builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivoLocal>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 
@@ -26,6 +30,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();   
 
 app.UseAuthorization();
 

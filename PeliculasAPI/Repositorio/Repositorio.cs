@@ -1,7 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Conventions;
+using PeliculasAPI.Ayudantes;
 using PeliculasAPI.Context;
 using PeliculasAPI.Entidades;
+using PeliculasAPI.Modelos;
 
 namespace PeliculasAPI.Repositorio
 {
@@ -20,7 +23,7 @@ namespace PeliculasAPI.Repositorio
             return Task.FromResult(dbSet.Where(expression));
         }
         public async Task<List<TEntity>> ObtenerTodo()
-        {
+        {            
             var entities = await dbSet.ToListAsync();
             return entities;
         }
@@ -36,10 +39,9 @@ namespace PeliculasAPI.Repositorio
             await dbContext.SaveChangesAsync();
         }
 
-
         public async Task Actualizar(TEntity entity)
         {
-             dbSet.Update(entity);           
+            dbSet.Update(entity);           
             await dbContext.SaveChangesAsync();          
         }
 
@@ -47,6 +49,11 @@ namespace PeliculasAPI.Repositorio
         {
             dbSet.Remove(entity);
             await dbContext.SaveChangesAsync();
+        }
+
+        public Task<IQueryable<TEntity>> AsQueryable()
+        {
+            return Task.FromResult(dbSet.AsQueryable());
         }
     }
 }

@@ -2,11 +2,11 @@
 
 namespace PeliculasAPI.Modelos
 {
-    public class ActorModel
+    public class ActorPatchModelo
     {
-        public int Id { get; set; }
         [Required]
         [StringLength(120)]
         public string Nombre { get; set; }
+        public DateTime FechaDeNacimiento { get; set; }
     }
 }

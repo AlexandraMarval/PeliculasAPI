@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Servicios;
 
@@ -18,9 +19,9 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult> ObtenerListadoDeActor()
+        public async Task<ActionResult> ObtenerListadoDeActor([FromQuery] PaginacionModel paginacion)
         {
-            var actor = await servicio.ObtenerActores();
+            var actor = await servicio.ObtenerActores(paginacion);
             if (actor == null)
             {
                 return NotFound("No se encontro resultado");
@@ -55,6 +56,13 @@ namespace PeliculasAPI.Controllers
         {
             var actualizarActor = await servicio.ActualizarActor(id, actualizarActorModelo);
             return Ok(actualizarActor);
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<ActorPatchModelo> patchDocument)
+        {
+            var actorModel = await servicio.ObtenerActorPatchId(id, patchDocument);            
+            return Ok(actorModel);
         }
 
         [HttpDelete]

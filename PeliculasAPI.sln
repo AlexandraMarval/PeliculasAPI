@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34202.233
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeliculasAPI", "PeliculasAPI\PeliculasAPI.csproj", "{56870978-D390-45FD-B9A7-478A5C7326A7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeliculasAPI", "PeliculasAPI\PeliculasAPI.csproj", "{56870978-D390-45FD-B9A7-478A5C7326A7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PeliculasAPITests", "PeliculasAPITests\PeliculasAPITests.csproj", "{1D2EB90C-80AC-4966-9862-B797DB8D1FD4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PeliculasAPITests", "PeliculasAPITests\PeliculasAPITests.csproj", "{1D2EB90C-80AC-4966-9862-B797DB8D1FD4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "TestsUnitarios", "TestsUnitarios", "{198E51EC-4676-4AD2-AD49-2C90FFC1A15B}"
 EndProject

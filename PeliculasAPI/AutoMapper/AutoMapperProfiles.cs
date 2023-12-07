@@ -12,8 +12,9 @@ namespace PeliculasAPI.AutoMapper
             CreateMap<CategoriaEntity, CategoriaModelo>().ReverseMap();
             CreateMap<ActualizarCategoriaModelo, CategoriaEntity>().ReverseMap();
             CreateMap<CrearActorModel, ActorEntity>().ReverseMap();
-            CreateMap<ActorEntity, ActorModel>().ReverseMap();
+            CreateMap<ActorEntity, ActorModel>().ReverseMap();           
             CreateMap<ActualizarActorModelo, ActorEntity>().ReverseMap().ForMember(x => x.Foto, options => options.Ignore());
+            CreateMap<ActorPatchModelo, ActorEntity>().ReverseMap();
         }
     }
 }
