@@ -47,5 +47,17 @@ namespace PeliculasAPI.Controllers
             { return NotFound("No se encontro resultado"); }
             return new CreatedAtRouteResult("obtenerPorId", new { id = pelicula.Id }, pelicula);
         }
+
+        [HttpPut]
+        public async Task<ActionResult> ActualizarPelicula([FromForm] int id, ActualizarPeliculaModelo actualizarPeliculaModelo)
+        {
+            var actualizarPelicula = await servicio.ActualizarPelicula(id,actualizarPeliculaModelo);
+            if(actualizarPelicula == null)
+            {
+                return NotFound("No se encontro un resultado para actualizar ese id");
+            }
+            return Ok(actualizarPelicula); 
+
+        }
     }
 }
