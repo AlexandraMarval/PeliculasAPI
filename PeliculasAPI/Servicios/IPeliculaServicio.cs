@@ -6,6 +6,7 @@ namespace PeliculasAPI.Servicios
     {
         public Task<List<PeliculaModelo>> ObtenerPelicula();
         public Task<PeliculaModelo> ObtenerPeliculaPorId(int id);
-        public Task<PeliculaModelo> Crear(CrearPeliculaModelo crearPeliculaModelo);      
+        public Task<PeliculaModelo> Crear(CrearPeliculaModelo crearPeliculaModelo);
+        public Task<PeliculaModelo> ActualizarPelicula(int id, ActualizarPeliculaModelo actualizarPeliculaModelo);
     }
 }

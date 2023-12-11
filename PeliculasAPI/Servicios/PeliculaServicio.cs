@@ -20,11 +20,25 @@ namespace PeliculasAPI.Servicios
             this.almacenadorArchivos = almacenadorArchivos;
         }
 
+        public async Task<List<PeliculaModelo>> ObtenerPelicula()
+        {
+            var pelicula = await repositorio.ObtenerTodo();
+            var peliculaModelo = mapper.Map<List<PeliculaModelo>>(pelicula);
+            return peliculaModelo;
+        }
+
+        public async Task<PeliculaModelo> ObtenerPeliculaPorId(int id)
+        {
+            var pelicula = await repositorio.ObtenerPorId(id);
+            var peliculaModelo = mapper.Map<PeliculaModelo>(pelicula);
+            return peliculaModelo;
+        }
+
         public async Task<PeliculaModelo> Crear(CrearPeliculaModelo crearPeliculaModelo)
         {
-            var siPeliculaExiste = await repositorio.BuscarPorCondicion(pelicula => pelicula.Titulo == crearPeliculaModelo.Titulo);
+            var siExistePelicula = await repositorio.BuscarPorCondicion(pelicula => pelicula.Titulo == crearPeliculaModelo.Titulo);
 
-            if (!siPeliculaExiste.Any())
+            if (!siExistePelicula.Any())
             {
                 var crearPelicula = mapper.Map<PeliculaEntidad>(crearPeliculaModelo);
 
@@ -49,19 +63,33 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        public async Task<List<PeliculaModelo>> ObtenerPelicula()
+        public async Task<PeliculaModelo> ActualizarPelicula(int id, ActualizarPeliculaModelo actualizarPeliculaModelo)
         {
-            var pelicula = await repositorio.ObtenerTodo();
-            var peliculaModelo = mapper.Map<List<PeliculaModelo>>(pelicula);
-            return peliculaModelo;
-        }
+            var siExistePelicula = await repositorio.ObtenerPorId(id);
 
-        public async Task<PeliculaModelo> ObtenerPeliculaPorId(int id)
-        {
-            var pelicula = await repositorio.ObtenerPorId(id);
-            var peliculaModelo = mapper.Map<PeliculaModelo>(pelicula);
-            return peliculaModelo;
-        }
+            if (siExistePelicula != null)
+            {
+                var actualizarPelicula = mapper.Map<PeliculaEntidad>(actualizarPeliculaModelo);
 
+                if (actualizarPeliculaModelo.Poster != null)
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        await actualizarPeliculaModelo.Poster.CopyToAsync(memoryStream);
+                        var contenido = memoryStream.ToArray();
+                        var extension = Path.GetExtension(actualizarPeliculaModelo.Poster.FileName);
+
+                        actualizarPelicula.Poster = await almacenadorArchivos.GuardarArchivo(contenido, extension, contenedor, actualizarPeliculaModelo.Poster.ContentType);
+                    }
+                }
+                await repositorio.Crear(actualizarPelicula);
+                var peliculaModelo = mapper.Map<PeliculaModelo>(actualizarPelicula);
+                return peliculaModelo;
+            }
+            else
+            {
+                throw new Exception("Ya existe una categoria con ese mismo titulo");
+            }
+        }
     }
 }

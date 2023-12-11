@@ -40,16 +40,12 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult> crear([FromForm]CrearPeliculaModelo crearPeliculaModelo)
+        public async Task<ActionResult> crear([FromForm] CrearPeliculaModelo crearPeliculaModelo)
         {
             var pelicula = await servicio.Crear(crearPeliculaModelo);
             if (pelicula == null)
             { return NotFound("No se encontro resultado"); }
             return new CreatedAtRouteResult("obtenerPorId", new { id = pelicula.Id }, pelicula);
         }
-
-        [HttpPut]
-        public async Task<ActionResult> 
-
     }
 }
