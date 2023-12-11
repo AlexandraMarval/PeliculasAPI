@@ -116,5 +116,21 @@ namespace PeliculasAPI.Servicios
 
             return peliculaPatchModel;
         }
+
+        public async Task<PeliculaModelo> Eliminar(int id)
+        {
+            var eliminarPelicula = await repositorio.ObtenerPorId(id);
+            if (eliminarPelicula != null)
+            {
+                await repositorio.Elimimar(eliminarPelicula);
+                var peliculaModel = mapper.Map<PeliculaModelo>(eliminarPelicula);
+                return peliculaModel;
+            }
+            else
+            {
+                throw new Exception("No existe un actor por el mismo id");
+            }
+
+        }
     }
 }

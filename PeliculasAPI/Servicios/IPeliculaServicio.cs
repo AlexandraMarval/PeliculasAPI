@@ -10,5 +10,6 @@ namespace PeliculasAPI.Servicios
         public Task<PeliculaModelo> Crear(CrearPeliculaModelo crearPeliculaModelo);
         public Task<PeliculaModelo> ActualizarPelicula(int id, ActualizarPeliculaModelo actualizarPeliculaModelo);
         public Task<PeliculaPatchModelo> ActualizarPeliculaPatchId(int id, JsonPatchDocument<PeliculaPatchModelo> patchDocument);
+        public Task<PeliculaModelo> Eliminar(int id);
     }
 }

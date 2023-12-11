@@ -98,20 +98,6 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        public async Task<ActorModel> Eliminar(int id)
-        {
-            var eliminarActor = await repositorio.ObtenerPorId(id);
-            if (eliminarActor != null)
-            {
-                await repositorio.Elimimar(eliminarActor);
-                var actorModel = mapper.Map<ActorModel>(eliminarActor);
-                return actorModel;
-            }
-            else
-            {
-                throw new Exception("No existe un actor por el mismo id");
-            }
-        }
 
         public async Task<ActorPatchModelo> ActualizarActorPatchId(int id, JsonPatchDocument<ActorPatchModelo> pathDocument)
         {
@@ -134,6 +120,21 @@ namespace PeliculasAPI.Servicios
             await repositorio.Actualizar(entidadDb);
             
             return actorPatchModel;
+        }
+
+        public async Task<ActorModel> Eliminar(int id)
+        {
+            var eliminarActor = await repositorio.ObtenerPorId(id);
+            if (eliminarActor != null)
+            {
+                await repositorio.Elimimar(eliminarActor);
+                var actorModel = mapper.Map<ActorModel>(eliminarActor);
+                return actorModel;
+            }
+            else
+            {
+                throw new Exception("No existe un actor por el mismo id");
+            }
         }
     }
 }
