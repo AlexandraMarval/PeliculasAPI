@@ -11,6 +11,5 @@ namespace PeliculasAPI.Entidades
         public bool EnCine { get; set; }
         public DateTime FechaEstreno{ get; set; }
         public string Poster { get; set; }
-
     }
 }

@@ -17,13 +17,13 @@ namespace PeliculasAPI.Controllers
             this.almacenadorArchivos = almacenadorArchivos;
         }
 
-        [HttpGet]
+        [HttpGet("{id}", Name = "obtenerPorId")]
         public async Task<ActionResult<PeliculaModelo>> ObtenerId(int id)
         {
             var pelicula = await servicio.ObtenerPeliculaPorId(id);
             if (pelicula == null)
             {
-                return BadRequest("No se encontro resultado");
+                return NotFound("No se encontro resultado");
             }
             return Ok(pelicula);
         }
@@ -34,11 +34,22 @@ namespace PeliculasAPI.Controllers
             var pelicula = await servicio.ObtenerPelicula();
             if (pelicula == null)
             {
-                return BadRequest("No se encontro resultado");
+                return NotFound("No se encontro resultado");
             }
             return Ok(pelicula);
-
         }
+
+        [HttpPost]
+        public async Task<ActionResult> crear([FromForm]CrearPeliculaModelo crearPeliculaModelo)
+        {
+            var pelicula = await servicio.Crear(crearPeliculaModelo);
+            if (pelicula == null)
+            { return NotFound("No se encontro resultado"); }
+            return new CreatedAtRouteResult("obtenerPorId", new { id = pelicula.Id }, pelicula);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult> 
 
     }
 }
