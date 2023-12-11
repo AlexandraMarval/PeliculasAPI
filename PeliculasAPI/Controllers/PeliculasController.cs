@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.Mvc;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Servicios;
 
@@ -28,7 +29,7 @@ namespace PeliculasAPI.Controllers
             return Ok(pelicula);
         }
 
-        [HttpGet]
+        [HttpGet(Name = "obtener listado de peliculas")]
         public async Task<ActionResult> ObtenerListadoDePelicula()
         {
             var pelicula = await servicio.ObtenerPelicula();
@@ -39,7 +40,7 @@ namespace PeliculasAPI.Controllers
             return Ok(pelicula);
         }
 
-        [HttpPost]
+        [HttpPost(Name = "Crear pelicula")]
         public async Task<ActionResult> crear([FromForm] CrearPeliculaModelo crearPeliculaModelo)
         {
             var pelicula = await servicio.Crear(crearPeliculaModelo);
@@ -48,8 +49,8 @@ namespace PeliculasAPI.Controllers
             return new CreatedAtRouteResult("obtenerPorId", new { id = pelicula.Id }, pelicula);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> ActualizarPelicula([FromForm] int id, ActualizarPeliculaModelo actualizarPeliculaModelo)
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ActualizarPelicula(int id, [FromBody] ActualizarPeliculaModelo actualizarPeliculaModelo)
         {
             var actualizarPelicula = await servicio.ActualizarPelicula(id,actualizarPeliculaModelo);
             if(actualizarPelicula == null)
@@ -57,6 +58,13 @@ namespace PeliculasAPI.Controllers
                 return NotFound("No se encontro un resultado para actualizar ese id");
             }
             return Ok(actualizarPelicula); 
+        }
+
+        [HttpPatch("{id}")]
+        public async Task<ActionResult> ActualizarPeliculaPacth(int id, [FromBody] JsonPatchDocument<PeliculaPatchModelo> patchDocument)
+        {
+            var pelicula = await servicio.ActualizarPeliculaPatchId(id,patchDocument);
+            return Ok(pelicula);
         }
     }
 }

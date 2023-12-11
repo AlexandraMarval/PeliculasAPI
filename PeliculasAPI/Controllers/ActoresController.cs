@@ -61,7 +61,7 @@ namespace PeliculasAPI.Controllers
         [HttpPatch("{id}")]
         public async Task<ActionResult> Patch(int id, [FromBody] JsonPatchDocument<ActorPatchModelo> patchDocument)
         {
-            var actorModel = await servicio.ObtenerActorPatchId(id, patchDocument);            
+            var actorModel = await servicio.ActualizarActorPatchId(id, patchDocument);            
             return Ok(actorModel);
         }
 

@@ -1,8 +1,10 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.JsonPatch;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Migrations;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Repositorio;
+using System.Xml.XPath;
 
 namespace PeliculasAPI.Servicios
 {
@@ -90,6 +92,29 @@ namespace PeliculasAPI.Servicios
             {
                 throw new Exception("Ya existe una categoria con ese mismo titulo");
             }
+        }
+
+        public async Task<PeliculaPatchModelo> ActualizarPeliculaPatchId(int id, JsonPatchDocument<PeliculaPatchModelo> patchDocument)
+        {
+            var entidadDb = await repositorio.ObtenerPorId(id);
+
+            if (patchDocument == null)
+            {
+                throw new Exception("El jsonPatchDocument es nulo");
+            }
+
+            if (entidadDb == null)
+            {
+                throw new Exception("No se encontró ninguna entidad con el id proporcionado");
+            }
+            var peliculaPatchModel = mapper.Map<PeliculaPatchModelo>(entidadDb);
+            patchDocument.ApplyTo(peliculaPatchModel);
+
+            entidadDb = mapper.Map<PeliculaEntidad>(peliculaPatchModel);
+
+            await repositorio.Actualizar(entidadDb);
+
+            return peliculaPatchModel;
         }
     }
 }

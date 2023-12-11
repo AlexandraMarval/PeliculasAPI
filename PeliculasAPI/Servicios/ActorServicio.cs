@@ -113,7 +113,7 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        public async Task<ActorPatchModelo> ObtenerActorPatchId(int id, JsonPatchDocument<ActorPatchModelo> pathDocument)
+        public async Task<ActorPatchModelo> ActualizarActorPatchId(int id, JsonPatchDocument<ActorPatchModelo> pathDocument)
         {
             var entidadDb = await repositorio.ObtenerPorId(id);
 
