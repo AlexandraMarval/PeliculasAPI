@@ -57,7 +57,6 @@ namespace PeliculasAPI.Controllers
                 return NotFound("No se encontro un resultado para actualizar ese id");
             }
             return Ok(actualizarPelicula); 
-
         }
     }
 }
