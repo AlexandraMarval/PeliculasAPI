@@ -66,5 +66,12 @@ namespace PeliculasAPI.Controllers
             var pelicula = await servicio.ActualizarPeliculaPatchId(id,patchDocument);
             return Ok(pelicula);
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> EliminarPelicula(int id)
+        {
+            var eliminarPelicula = await servicio.Eliminar(id);
+            return Ok(eliminarPelicula);
+        }
     }
 }
