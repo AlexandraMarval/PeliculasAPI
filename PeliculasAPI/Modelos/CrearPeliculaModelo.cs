@@ -1,4 +1,6 @@
-﻿using PeliculasAPI.Validaciones;
+﻿using Microsoft.AspNetCore.Mvc;
+using PeliculasAPI.Ayudantes;
+using PeliculasAPI.Validaciones;
 using System.ComponentModel.DataAnnotations;
 
 namespace PeliculasAPI.Modelos
@@ -9,6 +11,8 @@ namespace PeliculasAPI.Modelos
         public bool EnCine { get; set; }
         public DateTime FechaEstreno { get; set; }
         public IFormFile Poster { get; set; }
+
+        [ModelBinder(BinderType = typeof(TypeBinder))]
         public List<int> CategoriasIDs { get; set; }
     }
 }
