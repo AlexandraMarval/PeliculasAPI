@@ -9,5 +9,6 @@ namespace PeliculasAPI.Modelos
         public bool EnCine { get; set; }
         public DateTime FechaEstreno { get; set; }
         public IFormFile Poster { get; set; }
+        public List<int> CategoriasIDs { get; set; }
     }
 }

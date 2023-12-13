@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using PeliculasAPI.Context;
 
@@ -11,9 +12,11 @@ using PeliculasAPI.Context;
 namespace PeliculasAPI.Migrations
 {
     [DbContext(typeof(PeliculaDbContext))]
-    partial class PeliculaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231213093101_PeliculasActores_PeliculasCategorias")]
+    partial class PeliculasActores_PeliculasCategorias
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
