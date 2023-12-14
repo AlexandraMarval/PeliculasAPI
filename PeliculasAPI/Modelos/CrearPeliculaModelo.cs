@@ -12,7 +12,10 @@ namespace PeliculasAPI.Modelos
         public DateTime FechaEstreno { get; set; }
         public IFormFile Poster { get; set; }
 
-        [ModelBinder(BinderType = typeof(TypeBinder))]
+        [ModelBinder(BinderType = typeof(TypeBinder<List<int>>))]
         public List<int> CategoriasIDs { get; set; }
+
+        [ModelBinder(BinderType = typeof(TypeBinder<List<CrearActorPeliculasModelo>>))]
+        public List<CrearActorPeliculasModelo> Actores { get; set; } 
     }
 }
