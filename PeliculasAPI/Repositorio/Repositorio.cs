@@ -10,7 +10,7 @@ namespace PeliculasAPI.Repositorio
 {
     public class Repositorio<TEntity> : IRepositorio<TEntity> where TEntity : class
     {
-        private readonly PeliculaDbContext dbContext;
+        protected readonly PeliculaDbContext dbContext;
         private readonly DbSet<TEntity> dbSet;
 
         public Repositorio(PeliculaDbContext dbContext) 
@@ -35,8 +35,8 @@ namespace PeliculasAPI.Repositorio
 
         public async Task Crear(TEntity entity)
         {
-            await dbSet.AddAsync(entity);
-            await dbContext.SaveChangesAsync();
+            //await dbSet.AddAsync(entity);
+            //await dbContext.SaveChangesAsync();
         }
 
         public async Task Actualizar(TEntity entity)

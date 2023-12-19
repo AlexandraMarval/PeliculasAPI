@@ -1,25 +1,25 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
+using PeliculasAPI.Context;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Migrations;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Repositorio;
-using System.Xml.XPath;
 
 namespace PeliculasAPI.Servicios
 {
     public class PeliculaServicio : IPeliculaServicio
     {
-        private readonly IRepositorio<PeliculaEntidad> repositorio;
         private readonly IMapper mapper;
         private readonly IAlmacenadorArchivos almacenadorArchivos;
+        private readonly IPeliculaRepositorio repositorio;
         private readonly string contenedor = "peliculas";
 
-        public PeliculaServicio(IRepositorio<PeliculaEntidad> repositorio, IMapper mapper, IAlmacenadorArchivos almacenadorArchivos) 
+        public PeliculaServicio(IMapper mapper, IAlmacenadorArchivos almacenadorArchivos, IPeliculaRepositorio repositorio) 
         {
-            this.repositorio = repositorio;
             this.mapper = mapper;
             this.almacenadorArchivos = almacenadorArchivos;
+            this.repositorio = repositorio;
         }
 
         public async Task<List<PeliculaModelo>> ObtenerPelicula()
@@ -55,6 +55,7 @@ namespace PeliculasAPI.Servicios
                         crearPelicula.Poster = await almacenadorArchivos.GuardarArchivo(contenido, extension, contenedor, crearPeliculaModelo.Poster.ContentType);
                     }
                 }
+                //AsignarOrdenActores(crearPelicula);
                 await repositorio.Crear(crearPelicula);
                 var peliculaModelo = mapper.Map<PeliculaModelo>(crearPelicula);
                 return peliculaModelo;
@@ -67,12 +68,10 @@ namespace PeliculasAPI.Servicios
 
         public async Task<PeliculaModelo> ActualizarPelicula(int id, ActualizarPeliculaModelo actualizarPeliculaModelo)
         {
-            var siExistePelicula = await repositorio.ObtenerPorId(id);
+            var peliculaDB = await repositorio.BuscarPorId(id);
 
-            if (siExistePelicula != null)
+            if (peliculaDB != null)
             {
-                var actualizarPelicula = mapper.Map<PeliculaEntidad>(actualizarPeliculaModelo);
-
                 if (actualizarPeliculaModelo.Poster != null)
                 {
                     using (var memoryStream = new MemoryStream())
@@ -81,11 +80,12 @@ namespace PeliculasAPI.Servicios
                         var contenido = memoryStream.ToArray();
                         var extension = Path.GetExtension(actualizarPeliculaModelo.Poster.FileName);
 
-                        actualizarPelicula.Poster = await almacenadorArchivos.GuardarArchivo(contenido, extension, contenedor, actualizarPeliculaModelo.Poster.ContentType);
+                        peliculaDB.Poster = await almacenadorArchivos.EditarArchivo(contenido, extension, contenedor, peliculaDB.Poster,actualizarPeliculaModelo.Poster.ContentType);
                     }
                 }
-                await repositorio.Crear(actualizarPelicula);
-                var peliculaModelo = mapper.Map<PeliculaModelo>(actualizarPelicula);
+                AsignarOrdenActores(peliculaDB);
+                await repositorio.Actualizar(peliculaDB);
+                var peliculaModelo = mapper.Map<PeliculaModelo>(peliculaDB);
                 return peliculaModelo;
             }
             else
@@ -130,7 +130,17 @@ namespace PeliculasAPI.Servicios
             {
                 throw new Exception("No existe un actor por el mismo id");
             }
+        }
 
+        private void AsignarOrdenActores(PeliculaEntidad peliculaEntidad)
+        {
+            if (peliculaEntidad.PeliculaActores != null)
+            {
+                for (int i = 0; i < peliculaEntidad.PeliculaActores.Count; i++)
+                {
+                    peliculaEntidad.PeliculaActores[i].Orden = i;
+                }
+            }
         }
     }
 }
