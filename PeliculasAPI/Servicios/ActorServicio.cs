@@ -12,12 +12,12 @@ namespace PeliculasAPI.Servicios
     public class ActorServicio : IActorServicio
     {       
         private readonly IMapper mapper;
-        private readonly IRepositorio<ActorEntity> repositorio;
+        private readonly IRepositorio<ActorEntidad> repositorio;
         private readonly IAlmacenadorArchivos almacenadorArchivos;
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly string contenedor = "actores";
 
-        public ActorServicio(IMapper mapper,IRepositorio<ActorEntity> repositorio, IAlmacenadorArchivos almacenadorArchivos, IHttpContextAccessor httpContextAccessor) 
+        public ActorServicio(IMapper mapper,IRepositorio<ActorEntidad> repositorio, IAlmacenadorArchivos almacenadorArchivos, IHttpContextAccessor httpContextAccessor) 
         {          
             this.mapper = mapper;
             this.repositorio = repositorio;
@@ -48,7 +48,7 @@ namespace PeliculasAPI.Servicios
 
             if (!actorExiste.Any())
             {
-                var crearActor = mapper.Map<ActorEntity>(crearActorModel);
+                var crearActor = mapper.Map<ActorEntidad>(crearActorModel);
 
                 if (crearActor.Foto != null)
                 {
@@ -115,7 +115,7 @@ namespace PeliculasAPI.Servicios
             var actorPatchModel = mapper.Map<ActorPatchModelo>(entidadDb);
             pathDocument.ApplyTo(actorPatchModel);
 
-            entidadDb = mapper.Map<ActorEntity>(actorPatchModel);
+            entidadDb = mapper.Map<ActorEntidad>(actorPatchModel);
 
             await repositorio.Actualizar(entidadDb);
             

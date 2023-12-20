@@ -11,8 +11,8 @@ namespace PeliculasAPI.Entidades
         public bool EnCine { get; set; }
         public DateTime FechaEstreno{ get; set; }
         public string Poster { get; set; }
-        public List<PeliculasActores> PeliculaActores { get; set; }
-        public List<PeliculasCategorias> PeliculaCategorias { get; set; }
-        public List<PeliculasSalasDeCine> peliculasSalasDeCines { get; set; }
+        public List<PeliculasActoresEntidad> PeliculaActores { get; set; }
+        public List<PeliculasCategoriasEntidad> PeliculaCategorias { get; set; }
+        public List<PeliculasSalasDeCineEntidad> peliculasSalasDeCines { get; set; }
     }
 }

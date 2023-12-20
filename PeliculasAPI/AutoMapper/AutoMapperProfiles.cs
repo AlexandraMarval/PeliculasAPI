@@ -8,13 +8,13 @@ namespace PeliculasAPI.AutoMapper
     {
         public AutoMapperProfiles()
         {
-            CreateMap<CrearCategoriaModelo, CategoriaEntity>().ReverseMap();
-            CreateMap<CategoriaEntity, CategoriaModelo>().ReverseMap();
-            CreateMap<ActualizarCategoriaModelo, CategoriaEntity>().ReverseMap();
-            CreateMap<CrearActorModel, ActorEntity>().ReverseMap();
-            CreateMap<ActorEntity, ActorModel>().ReverseMap();           
-            CreateMap<ActualizarActorModelo, ActorEntity>().ReverseMap().ForMember(x => x.Foto, options => options.Ignore());
-            CreateMap<ActorPatchModelo, ActorEntity>().ReverseMap();
+            CreateMap<CrearCategoriaModelo, CategoriaEntidad>().ReverseMap();
+            CreateMap<CategoriaEntidad, CategoriaModelo>().ReverseMap();
+            CreateMap<ActualizarCategoriaModelo, CategoriaEntidad>().ReverseMap();
+            CreateMap<CrearActorModel, ActorEntidad>().ReverseMap();
+            CreateMap<ActorEntidad, ActorModel>().ReverseMap();           
+            CreateMap<ActualizarActorModelo, ActorEntidad>().ReverseMap().ForMember(x => x.Foto, options => options.Ignore());
+            CreateMap<ActorPatchModelo, ActorEntidad>().ReverseMap();
             CreateMap<CrearPeliculaModelo, PeliculaEntidad>()
                 .ForMember(pelicula => pelicula.Poster, options => options.Ignore())
                 .ForMember(pelicula => pelicula.PeliculaCategorias, options => options.MapFrom(MapPeliculasCategorias))
@@ -24,9 +24,9 @@ namespace PeliculasAPI.AutoMapper
             CreateMap<PeliculaPatchModelo, PeliculaEntidad>().ReverseMap();
         }
 
-        private List<PeliculasCategorias> MapPeliculasCategorias(CrearPeliculaModelo crearPeliculaModelo, PeliculaEntidad peliculaEntidad)
+        private List<PeliculasCategoriasEntidad> MapPeliculasCategorias(CrearPeliculaModelo crearPeliculaModelo, PeliculaEntidad peliculaEntidad)
         {
-            var resultado = new List<PeliculasCategorias>();
+            var resultado = new List<PeliculasCategoriasEntidad>();
             if (crearPeliculaModelo.CategoriasIDs == null)
             {
                 return resultado;
@@ -34,21 +34,21 @@ namespace PeliculasAPI.AutoMapper
 
             foreach (var categoria in crearPeliculaModelo.CategoriasIDs )
             {
-                resultado.Add( new PeliculasCategorias(){ CategoriaId = categoria });
+                resultado.Add( new PeliculasCategoriasEntidad(){ CategoriaId = categoria });
             }
             return resultado;
         }
 
-        private List<PeliculasActores> MapPeliculasActores(CrearPeliculaModelo crearPeliculaModelo, PeliculaEntidad peliculaEntidad)
+        private List<PeliculasActoresEntidad> MapPeliculasActores(CrearPeliculaModelo crearPeliculaModelo, PeliculaEntidad peliculaEntidad)
         {
-            var resultado = new List<PeliculasActores>();
+            var resultado = new List<PeliculasActoresEntidad>();
             if (crearPeliculaModelo.Actores == null)
             {
 
             }
             foreach (var actor in crearPeliculaModelo.Actores)
             {
-                resultado.Add ( new PeliculasActores() { ActorId  = actor.ActorId, Personaje = actor.Personaje});
+                resultado.Add ( new PeliculasActoresEntidad() { ActorId  = actor.ActorId, Personaje = actor.Personaje});
             }
             return resultado;
         }

@@ -2,12 +2,12 @@
 
 namespace PeliculasAPI.Entidades
 {
-    public class CategoriaEntity
+    public class CategoriaEntidad
     {
         public int Id { get; set; }
         [Required]
         [StringLength(40)]
         public string Nombre { get; set; }
-        public List<PeliculasCategorias> PeliculasCategorias { get; set; }
+        public List<PeliculasCategoriasEntidad> PeliculasCategorias { get; set; }
     }
 }

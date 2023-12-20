@@ -10,9 +10,9 @@ namespace PeliculasAPI.Servicios
     public class CategoriaServicio : ICategoriaServicio
     {       
         private readonly IMapper mapper;
-        private readonly IRepositorio<CategoriaEntity> repositorio;
+        private readonly IRepositorio<CategoriaEntidad> repositorio;
 
-        public CategoriaServicio(IMapper mapper, IRepositorio<CategoriaEntity> repositorio) 
+        public CategoriaServicio(IMapper mapper, IRepositorio<CategoriaEntidad> repositorio) 
         {
             this.mapper = mapper;
             this.repositorio = repositorio;
@@ -37,7 +37,7 @@ namespace PeliculasAPI.Servicios
 
             if (!categoriaExiste.Any())
             {
-                var crearCategoria = mapper.Map<CategoriaEntity>(crearCategoriaModelo);
+                var crearCategoria = mapper.Map<CategoriaEntidad>(crearCategoriaModelo);
                 await repositorio.Crear(crearCategoria);
                 var categoriaModel = mapper.Map<CategoriaModelo>(crearCategoria);
                 return categoriaModel;
