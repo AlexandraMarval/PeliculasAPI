@@ -35,8 +35,8 @@ namespace PeliculasAPI.Repositorio
 
         public async Task Crear(TEntity entity)
         {
-            //await dbSet.AddAsync(entity);
-            //await dbContext.SaveChangesAsync();
+            await dbSet.AddAsync(entity);
+            await dbContext.SaveChangesAsync();
         }
 
         public async Task Actualizar(TEntity entity)

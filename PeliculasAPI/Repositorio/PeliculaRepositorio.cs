@@ -13,7 +13,7 @@ namespace PeliculasAPI.Repositorio
 
         public async Task<PeliculaEntidad> BuscarPorId(int id)
         {
-            var pelicula = await dbContext.peliculas
+            var pelicula = await dbContext.Peliculas
                  .Include(x => x.PeliculaActores)
                  .Include(x => x.PeliculaCategorias)
                  .FirstOrDefaultAsync(x => x.Id == id);

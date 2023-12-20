@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.JsonPatch;
-using PeliculasAPI.Context;
 using PeliculasAPI.Entidades;
-using PeliculasAPI.Migrations;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Repositorio;
 

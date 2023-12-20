@@ -7,6 +7,6 @@
         public string Personaje { get; set; }
         public int Orden {  get; set; }
         public ActorEntity Actor { get; set; }
-        public PeliculaEntidad pelicula { get; set; }
+        public PeliculaEntidad Pelicula { get; set; }
     }
 }

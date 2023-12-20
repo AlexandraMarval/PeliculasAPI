@@ -13,5 +13,6 @@ namespace PeliculasAPI.Entidades
         public string Poster { get; set; }
         public List<PeliculasActores> PeliculaActores { get; set; }
         public List<PeliculasCategorias> PeliculaCategorias { get; set; }
+        public List<PeliculasSalasDeCine> peliculasSalasDeCines { get; set; }
     }
 }
