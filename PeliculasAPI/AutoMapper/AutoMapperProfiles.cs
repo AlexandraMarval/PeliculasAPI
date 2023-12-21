@@ -23,7 +23,11 @@ namespace PeliculasAPI.AutoMapper
             CreateMap<ActualizarPeliculaModelo, PeliculaEntidad>().ReverseMap();
             CreateMap<PeliculaPatchModelo, PeliculaEntidad>().ReverseMap();
             CreateMap<CrearSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
-            CreateMap<SalaDeCineEntidad, SalaDeCineModelo>().ReverseMap();
+            CreateMap<SalaDeCineEntidad, SalaDeCineModelo>().ForMember(x => x.Latitud, x => x.MapFrom(y => y.Ubicacion.Y))
+                .ForMember(x => x.Longitud, x => x.MapFrom(y => y.Ubicacion.X));
+
+            CreateMap<SalaDeCineModelo, SalaDeCineEntidad>();
+            
             CreateMap<ActualizarSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
         }
 
