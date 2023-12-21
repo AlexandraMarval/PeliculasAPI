@@ -38,7 +38,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost(Name = "CrearSalaDeCine")]
-        public async Task<ActionResult> CrearSalaDeCine(CrearSalaDeCineModelo crearSalaDeCineModelo)
+        public async Task<ActionResult> CrearSalaDeCine([FromBody]CrearSalaDeCineModelo crearSalaDeCineModelo)
         {
             var salaDeCine = await servicio.CrearSalaDeCine(crearSalaDeCineModelo);
             if (salaDeCine == null)
@@ -46,6 +46,20 @@ namespace PeliculasAPI.Controllers
                 return NotFound("No se encontro resultado");
             }
             return new CreatedAtRouteResult("ObtenerSalaDeCinePorId", new { id = salaDeCine.Id}, salaDeCine);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<ActionResult> ActualizarSalaDeCine(int id, [FromBody] ActualizarSalaDeCineModelo actualizarSalaDeCineModelo)
+        {
+            var salaDeCine = await servicio.ActualizarSalaDeCine(id, actualizarSalaDeCineModelo);
+            return Ok(salaDeCine);
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> EliminarSalaDeCine(int id)
+        {
+            var salaDeCine = await servicio.EliminarSalaDeCine(id);
+            return Ok(salaDeCine);
         }
     }
 }

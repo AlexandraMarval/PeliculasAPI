@@ -46,5 +46,36 @@ namespace PeliculasAPI.Servicios
                 throw new Exception("Ya existe un nombre");
             }
         }
+
+        public async Task<SalaDeCineModelo> ActualizarSalaDeCine(int id, ActualizarSalaDeCineModelo actualizarSalaDeCineModelo)
+        {
+            var salaDeCine = await repositorio.ObtenerPorId(id);
+            if (salaDeCine != null)
+            {
+                salaDeCine.Nombre = actualizarSalaDeCineModelo.Nombre;
+                await repositorio.Actualizar(salaDeCine);
+                var salaDeCineModelo = mapper.Map<SalaDeCineModelo>(salaDeCine);
+                return salaDeCineModelo;
+            }
+            else
+            {
+                throw new Exception("No existe una sala de cine con ese id");
+            }
+        }
+
+        public async Task<SalaDeCineModelo> EliminarSalaDeCine(int id)
+        {
+            var salaDeCineDB = await repositorio.ObtenerPorId(id);
+            if(salaDeCineDB != null)
+            {
+                await repositorio.Elimimar(salaDeCineDB);
+                var salaDeCine = mapper.Map<SalaDeCineModelo>(salaDeCineDB);
+                return salaDeCine;
+            }
+            else
+            {
+                throw new Exception("No existe ese id");
+            }
+        }
     }
 }

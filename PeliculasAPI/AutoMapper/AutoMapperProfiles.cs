@@ -22,6 +22,9 @@ namespace PeliculasAPI.AutoMapper
             CreateMap<PeliculaEntidad, PeliculaModelo>().ReverseMap();
             CreateMap<ActualizarPeliculaModelo, PeliculaEntidad>().ReverseMap();
             CreateMap<PeliculaPatchModelo, PeliculaEntidad>().ReverseMap();
+            CreateMap<CrearSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
+            CreateMap<SalaDeCineEntidad, SalaDeCineModelo>().ReverseMap();
+            CreateMap<ActualizarSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
         }
 
         private List<PeliculasCategoriasEntidad> MapPeliculasCategorias(CrearPeliculaModelo crearPeliculaModelo, PeliculaEntidad peliculaEntidad)

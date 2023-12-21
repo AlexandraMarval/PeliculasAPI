@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Context;
 using PeliculasAPI.Repositorio;
 using PeliculasAPI.Servicios;
@@ -5,7 +6,8 @@ using PeliculasAPI.Servicios;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddSqlServer<PeliculaDbContext>(builder.Configuration.GetConnectionString("DefaultConnection"));
+builder.Services.AddSqlServer<PeliculaDbContext>(builder.Configuration.GetConnectionString("DefaultConnection"),
+    sqlServerOptions => sqlServerOptions.UseNetTopologySuite());
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers().AddNewtonsoftJson();
 
@@ -17,6 +19,7 @@ builder.Services
     .AddTransient<IActorServicio, ActorServicio>()
     .AddTransient<IPeliculaServicio, PeliculaServicio>()
     .AddTransient<IPeliculaRepositorio, PeliculaRepositorio>()
+    .AddTransient<ISalaDeCineServicio, SalaDeCineServicio>()
     .AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
 //builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
 builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivoLocal>();

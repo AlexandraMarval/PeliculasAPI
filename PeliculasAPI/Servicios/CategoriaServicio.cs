@@ -50,13 +50,13 @@ namespace PeliculasAPI.Servicios
 
         public async Task<CategoriaModelo> ActualizarCategoria(int id, ActualizarCategoriaModelo actualizaCategoriaModelo)
         {
-            var actualizarCategoria = await repositorio.ObtenerPorId(id);
+            var categoriaDB = await repositorio.ObtenerPorId(id);
 
-            if (actualizarCategoria != null)
+            if (categoriaDB != null)
             {
-                actualizarCategoria.Nombre = actualizaCategoriaModelo.Nombre;
-                await repositorio.Actualizar(actualizarCategoria);
-                var categoriaModelRespuesta = mapper.Map<CategoriaModelo>(actualizarCategoria);
+                categoriaDB.Nombre = actualizaCategoriaModelo.Nombre;
+                await repositorio.Actualizar(categoriaDB);
+                var categoriaModelRespuesta = mapper.Map<CategoriaModelo>(categoriaDB);
                 return categoriaModelRespuesta;
             }
             else

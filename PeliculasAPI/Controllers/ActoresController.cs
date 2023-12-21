@@ -65,7 +65,7 @@ namespace PeliculasAPI.Controllers
             return Ok(actorModel);
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
         public async Task<ActionResult> EliminarActor(int id)
         {
             var Actor = await servicio.Eliminar(id);
