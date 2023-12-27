@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Modelos;
 
@@ -6,7 +8,7 @@ namespace PeliculasAPI.AutoMapper
 {
     public class AutoMapperProfiles : Profile
     {
-        public AutoMapperProfiles()
+        public AutoMapperProfiles(GeometryFactory geometryFactory)
         {
             CreateMap<CrearCategoriaModelo, CategoriaEntidad>().ReverseMap();
             CreateMap<CategoriaEntidad, CategoriaModelo>().ReverseMap();
@@ -22,11 +24,14 @@ namespace PeliculasAPI.AutoMapper
             CreateMap<PeliculaEntidad, PeliculaModelo>().ReverseMap();
             CreateMap<ActualizarPeliculaModelo, PeliculaEntidad>().ReverseMap();
             CreateMap<PeliculaPatchModelo, PeliculaEntidad>().ReverseMap();
-            CreateMap<CrearSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
+            CreateMap<CrearSalaDeCineModelo, SalaDeCineEntidad>()
+                  .ForMember(x => x.Ubicacion, x => x.MapFrom(y => geometryFactory.CreatePoint(new Coordinate(y.Longitud, y.Latitud))));
+
             CreateMap<SalaDeCineEntidad, SalaDeCineModelo>().ForMember(x => x.Latitud, x => x.MapFrom(y => y.Ubicacion.Y))
                 .ForMember(x => x.Longitud, x => x.MapFrom(y => y.Ubicacion.X));
 
-            CreateMap<SalaDeCineModelo, SalaDeCineEntidad>();
+            CreateMap<SalaDeCineModelo, SalaDeCineEntidad>()
+                .ForMember(x => x.Ubicacion, x => x.MapFrom(y => geometryFactory.CreatePoint(new Coordinate(y.Longitud, y.Latitud))));
             
             CreateMap<ActualizarSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
         }

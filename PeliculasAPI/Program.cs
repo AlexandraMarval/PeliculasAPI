@@ -1,4 +1,8 @@
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
+using NetTopologySuite.Geometries;
+using PeliculasAPI.AutoMapper;
 using PeliculasAPI.Context;
 using PeliculasAPI.Repositorio;
 using PeliculasAPI.Servicios;
@@ -10,6 +14,14 @@ builder.Services.AddSqlServer<PeliculaDbContext>(builder.Configuration.GetConnec
     sqlServerOptions => sqlServerOptions.UseNetTopologySuite());
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326));
+builder.Services.AddSingleton(provider =>
+    new MapperConfiguration(config =>
+    {
+        var geometryFactory = provider.GetRequiredService<GeometryFactory>();
+        config.AddProfile(new AutoMapperProfiles(geometryFactory));
+    }).CreateMapper()
+);
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services
