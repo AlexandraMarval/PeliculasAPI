@@ -52,6 +52,7 @@ builder.Services
     .AddTransient<IPeliculaRepositorio, PeliculaRepositorio>()
     .AddTransient<ISalaDeCineServicio, SalaDeCineServicio>()
     .AddTransient<ISalaDeCineRepositorio, SalaDeCineRepositorio>()
+    .AddTransient<ICuentaServicio, CuentaServicio>()
     .AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
 //builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
 builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivoLocal>();

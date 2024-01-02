@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using PeliculasAPI.Modelos;
+using PeliculasAPI.Servicios;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
@@ -14,33 +16,28 @@ namespace PeliculasAPI.Controllers
     [Route("api/Cuentas")]
     public class CuentasController : ControllerBase
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly IConfiguration configuration;
+        private readonly UserManager<IdentityUser> userManager;      
         private readonly SignInManager<IdentityUser> signInManager;
-        private readonly IDataProtector dataProtector;
-
-        public CuentasController(UserManager<IdentityUser> userManager, IConfiguration configuration, SignInManager<IdentityUser> signInManager, IDataProtectionProvider dataProtectionProvider)
+        private readonly ICuentaServicio servicio;
+      
+        public CuentasController(UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, ICuentaServicio servicio)
         {
             this.userManager = userManager;
-            this.configuration = configuration;
             this.signInManager = signInManager;
-            dataProtector = dataProtectionProvider.CreateProtector("Valor_inico_y_quizas_secreto");
+            this.servicio = servicio;
         }
 
         [HttpPost("registrar", Name = "registrarUsuario")] // api/cuentas/registrar
         public async Task<ActionResult<RespuestasAutenticacionModelo>> Registrar(CredencialesUsuario credencialesUsuario)
         {
-            var usuario = new IdentityUser { UserName = credencialesUsuario.Email, Email = credencialesUsuario.Email };
-            var resultado = await userManager.CreateAsync(usuario, credencialesUsuario.Password);
+            var usuario = await servicio.Registrar(credencialesUsuario);
+            return Ok(usuario);
+        }
 
-            if (resultado.Succeeded)
-            {
-                return await ConstruirToken(credencialesUsuario);
-            }
-            else
-            {
-                return BadRequest(resultado.Errors);
-            }
+        [HttpPost("login", Name = "loginUsuario")]
+        public async Task<ActionResult<RespuestasAutenticacionModelo>> Login(CredencialesUsuario credencialesUsuario)
+        {
+            var resultado = await servicio.Login(credencialesUsuario); return Ok(resultado);
         }
     }
 }
