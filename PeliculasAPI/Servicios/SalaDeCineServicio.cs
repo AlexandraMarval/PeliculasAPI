@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using NetTopologySuite.Geometries;
+using NetTopologySuite.IO;
 using PeliculasAPI.Entidades;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Repositorio;
@@ -8,12 +10,14 @@ namespace PeliculasAPI.Servicios
     public class SalaDeCineServicio : ISalaDeCineServicio
     {
         private readonly IMapper mapper;
-        private readonly IRepositorio<SalaDeCineEntidad> repositorio;
+        private readonly ISalaDeCineRepositorio repositorio;
+        private readonly GeometryFactory geometryFactory;
 
-        public SalaDeCineServicio(IMapper mapper, IRepositorio<SalaDeCineEntidad> repositorio)
+        public SalaDeCineServicio(IMapper mapper, ISalaDeCineRepositorio repositorio, GeometryFactory geometryFactory)
         {
             this.mapper = mapper;
             this.repositorio = repositorio;
+            this.geometryFactory = geometryFactory;
         }
 
         public async Task<List<SalaDeCineModelo>> ObtenerSalaDeCine()
@@ -76,6 +80,14 @@ namespace PeliculasAPI.Servicios
             {
                 throw new Exception("No existe ese id");
             }
+        }
+
+        public async Task<List<SalaDeCineCercanoModelo>> Cercano(SalaDeCineCercanoFiltroModelo cineCercanoFiltroModelo)
+        {
+            var ubicacionUsuario = geometryFactory.CreatePoint(new Coordinate(cineCercanoFiltroModelo.Longitud, cineCercanoFiltroModelo.Latitud));
+
+            var salaDeCine = await repositorio.ObtenerTodo(ubicacionUsuario, cineCercanoFiltroModelo);
+            return salaDeCine;
         }
     }
 }

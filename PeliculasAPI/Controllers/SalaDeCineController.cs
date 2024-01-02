@@ -37,6 +37,18 @@ namespace PeliculasAPI.Controllers
             return Ok(salaDeCine);
         }
 
+        [HttpGet("Cercanos")]
+        public async Task<ActionResult<List<SalaDeCineCercanoModelo>>> Cercanos([FromQuery] SalaDeCineCercanoFiltroModelo filtroModelo
+            )
+        {
+            var salaDeCine = await servicio.Cercano(filtroModelo);
+            if (salaDeCine == null)
+            {
+                return NotFound("No se encontro resultado");
+            }
+            return Ok(salaDeCine);
+        }
+
         [HttpPost(Name = "CrearSalaDeCine")]
         public async Task<ActionResult> CrearSalaDeCine([FromBody]CrearSalaDeCineModelo crearSalaDeCineModelo)
         {

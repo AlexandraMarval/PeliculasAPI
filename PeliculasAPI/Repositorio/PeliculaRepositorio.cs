@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Context;
 using PeliculasAPI.Entidades;
-using System.Collections.Generic;
 
 namespace PeliculasAPI.Repositorio
 {

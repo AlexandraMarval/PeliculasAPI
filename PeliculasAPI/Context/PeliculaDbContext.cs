@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Entidades;
 
 namespace PeliculasAPI.Context
 {
-    public class PeliculaDbContext : DbContext
+    public class PeliculaDbContext : IdentityDbContext
     {
         public DbSet<CategoriaEntidad> Categorias { get; set; }
         public DbSet<ActorEntidad> Actores { get; set; }
