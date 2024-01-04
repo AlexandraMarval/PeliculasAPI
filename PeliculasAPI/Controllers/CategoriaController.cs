@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Context;
 using PeliculasAPI.Entidades;
@@ -9,6 +11,7 @@ namespace PeliculasAPI.Controllers
 {
     [ApiController]
     [Route("api/categoria")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoriaController : ControllerBase
     {
         private readonly ICategoriaServicio servicio;

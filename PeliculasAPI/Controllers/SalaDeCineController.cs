@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Servicios;
 
@@ -6,6 +8,7 @@ namespace PeliculasAPI.Controllers
 {
     [ApiController]
     [Route("api/salasDeCine")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class SalaDeCineController : ControllerBase
     {
         private readonly ISalaDeCineServicio servicio;

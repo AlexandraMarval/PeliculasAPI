@@ -37,7 +37,31 @@ namespace PeliculasAPI.Controllers
         [HttpPost("login", Name = "loginUsuario")]
         public async Task<ActionResult<RespuestasAutenticacionModelo>> Login(CredencialesUsuario credencialesUsuario)
         {
-            var resultado = await servicio.Login(credencialesUsuario); return Ok(resultado);
+            var resultado = await servicio.Login(credencialesUsuario);
+            if (resultado == null)
+            {
+                return BadRequest();
+            }
+            return Ok(resultado);
+        }
+
+        [HttpGet("Usuarios")]
+        public async Task<ActionResult<List<UsuarioModelo>>> ObtenerTodo([FromQuery]PaginacionModel paginacionModel)
+        {
+            var usuario = await servicio.ObtenerTodo(paginacionModel);
+            return Ok(usuario);
+        }
+
+        [HttpGet("Roles")]
+        public async Task<ActionResult<List<string>>> ObtenerRoles()
+        {
+            return await servicio.ObtenerRoles();
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> AsignarRol()
+        {
+
         }
     }
 }

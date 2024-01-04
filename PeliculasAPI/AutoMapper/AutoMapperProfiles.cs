@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using PeliculasAPI.Entidades;
@@ -34,6 +35,8 @@ namespace PeliculasAPI.AutoMapper
                 .ForMember(x => x.Ubicacion, x => x.MapFrom(y => geometryFactory.CreatePoint(new Coordinate(y.Longitud, y.Latitud))));
             
             CreateMap<ActualizarSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
+
+            CreateMap<IdentityUser, UsuarioModelo>();
         }
 
         private List<PeliculasCategoriasEntidad> MapPeliculasCategorias(CrearPeliculaModelo crearPeliculaModelo, PeliculaEntidad peliculaEntidad)

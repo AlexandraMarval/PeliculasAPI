@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.JsonPatch;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Servicios;
@@ -7,6 +9,7 @@ namespace PeliculasAPI.Controllers
 {
     [ApiController]
     [Route("api/actores")]
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class ActoresController : ControllerBase
     {
         private readonly IActorServicio servicio;
@@ -14,8 +17,7 @@ namespace PeliculasAPI.Controllers
 
         public ActoresController(IActorServicio servicio)
         {
-            this.servicio = servicio;
-           
+            this.servicio = servicio;       
         }
 
         [HttpGet]
