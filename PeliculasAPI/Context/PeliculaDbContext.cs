@@ -1,6 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using NetTopologySuite;
 using PeliculasAPI.Entidades;
+using System.Security.Claims;
 
 namespace PeliculasAPI.Context
 {
@@ -21,7 +24,53 @@ namespace PeliculasAPI.Context
 
             modelBuilder.Entity<PeliculasSalasDeCineEntidad>().HasKey(x => new { x.PeliculaId, x.SalaDeCineId });
 
+            SeedData(modelBuilder);
+
             base.OnModelCreating(modelBuilder);
+        }
+
+        private void SeedData(ModelBuilder modelBuilder)
+        {
+            var rolAdminId = "654e70d5-ca99-4ca9-b081-01298bb91c75";
+            var usuarioAdminId = "dbcfecf9-f05a-49b7-bae0-38a564c70949";
+
+            var rolAdmin = new IdentityRole()
+            {
+                Id = rolAdminId,
+                Name = "Admin",
+                NormalizedName = "Admin"
+            };
+
+            var contraseñaHasher = new PasswordHasher<IdentityUser>();
+
+            var usuarioNombre = "ALEXANDRAM@HOTMAIL.COM";
+
+            var usuarioAdmin = new IdentityUser()
+            {
+                Id = usuarioAdminId,
+                UserName = usuarioNombre,
+                NormalizedUserName = usuarioNombre,
+                Email = usuarioNombre.ToLower(),
+                PasswordHash = contraseñaHasher.HashPassword(null,"Am1234$")
+            };
+
+            //modelBuilder.Entity<IdentityUser>()
+            //    .HasData(usuarioAdmin);
+
+            //modelBuilder.Entity<IdentityRole>()
+            //    .HasData(rolAdmin);
+
+            //modelBuilder.Entity<IdentityUserClaim<string>>()
+            //    .HasData(new IdentityUserClaim<string>()
+            //    {
+            //        Id = 1,
+            //        ClaimType = ClaimTypes.Role,
+            //        UserId = usuarioAdminId,
+            //        ClaimValue = "Admin",
+
+            //    });
+
+            var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
         }
         public PeliculaDbContext(DbContextOptions options) : base(options) { }    
     }

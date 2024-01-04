@@ -35,7 +35,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost("login", Name = "loginUsuario")]
-        public async Task<ActionResult<RespuestasAutenticacionModelo>> Login(CredencialesUsuario credencialesUsuario)
+        public async Task<ActionResult<RespuestasAutenticacionModelo>> Login([FromBody]CredencialesUsuario credencialesUsuario)
         {
             var resultado = await servicio.Login(credencialesUsuario);
             if (resultado == null)
@@ -46,6 +46,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("Usuarios")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<List<UsuarioModelo>>> ObtenerTodo([FromQuery]PaginacionModel paginacionModel)
         {
             var usuario = await servicio.ObtenerTodo(paginacionModel);
@@ -53,15 +54,26 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet("Roles")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult<List<string>>> ObtenerRoles()
         {
             return await servicio.ObtenerRoles();
         }
 
-        [HttpPost]
-        public async Task<ActionResult> AsignarRol()
+        [HttpPost("AsignarRol")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        public async Task<ActionResult> AsignarRol(EditarRolModelo editarRolModelo)
         {
-
+            var user = await servicio.AsignarRol(editarRolModelo);
+            return Ok(user);
         }
+
+        [HttpPost("RemoveRol")]
+        public async Task<ActionResult> RemoverRol(EditarRolModelo editarRolModelo)
+        {
+            var user = await servicio.RemoverRol(editarRolModelo);
+            return Ok(user);
+        }
+
     }
 }

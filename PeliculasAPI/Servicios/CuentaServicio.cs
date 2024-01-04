@@ -15,17 +15,15 @@ namespace PeliculasAPI.Servicios
     {
         private readonly IConfiguration configuration;
         private readonly UserManager<IdentityUser> userManager;
-        private readonly SignInManager<IdentityUser> signInManager;
-        private readonly IHttpContextAccessor httpContextAccessor;
+        private readonly SignInManager<IdentityUser> signInManager;        
         private readonly IUsuarioRepositorio repositorio;
         private readonly IMapper mapper;
 
-        public CuentaServicio(IConfiguration configuration, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IHttpContextAccessor httpContextAccessor, IUsuarioRepositorio repositorio, IMapper mapper)
+        public CuentaServicio(IConfiguration configuration, UserManager<IdentityUser> userManager, SignInManager<IdentityUser> signInManager, IUsuarioRepositorio repositorio, IMapper mapper)
         {
             this.configuration = configuration;
             this.userManager = userManager;
-            this.signInManager = signInManager;
-            this.httpContextAccessor = httpContextAccessor;
+            this.signInManager = signInManager;          
             this.repositorio = repositorio;
             this.mapper = mapper;
         }
@@ -63,16 +61,17 @@ namespace PeliculasAPI.Servicios
         {
             var claims = new List<Claim>
             {
-                new Claim(ClaimTypes.Email, credencialesUsuario.Email),
-                new Claim("lo que yo quiera", "Cualquier otro valor")
+                new Claim(ClaimTypes.Name,  credencialesUsuario.Email),
+                new Claim(ClaimTypes.Email, credencialesUsuario.Email)              
             };
 
             var usuario = await userManager.FindByEmailAsync(credencialesUsuario.Email);
+
             var claimsDB = await userManager.GetClaimsAsync(usuario);
 
             claims.AddRange(claimsDB);
 
-            var llave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["jwt:Key"]));
+            var llave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JWT:Key"]));
             var credenciales = new SigningCredentials(llave, SecurityAlgorithms.HmacSha256);
 
             var expiracion = DateTime.UtcNow.AddYears(1);
@@ -97,6 +96,21 @@ namespace PeliculasAPI.Servicios
         {
             var usuario = await repositorio.ObtenerRoles();
             return usuario.ToList();
+        }
+
+        public async Task<string> AsignarRol(EditarRolModelo editarRolModelo)
+        {
+            var user = await userManager.FindByIdAsync(editarRolModelo.UsuarioId);
+
+            await userManager.AddClaimAsync(user, new Claim(ClaimTypes.Role, editarRolModelo.NombreRol));
+            throw new Exception();
+        }
+
+        public async Task<string> RemoverRol(EditarRolModelo editarRolModelo)
+        {
+            var user = await userManager.FindByIdAsync(editarRolModelo.UsuarioId);
+            await userManager.RemoveClaimAsync(user,new Claim(ClaimTypes.Role, editarRolModelo.NombreRol));
+            throw new Exception();
         }
     }
 }
