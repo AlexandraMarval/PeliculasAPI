@@ -16,6 +16,8 @@ namespace PeliculasAPI.Context
         public DbSet<PeliculasCategoriasEntidad> PeliculasCategorias { get; set; }
         public DbSet<SalaDeCineEntidad> SalasDeCine { get; set; }
         public DbSet<PeliculasSalasDeCineEntidad> PeliculasSalasDeCines { get; set; }
+        public DbSet<ReseñaEntidad> Reseñas {  get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<PeliculasActoresEntidad>().HasKey(model => new {model.ActorId, model.PeliculaId});

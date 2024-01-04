@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace PeliculasAPI.Entidades
 {
-    public class RevisarEntidad : IId
+    public class ReseñaEntidad : IId
     {
         public int Id { get; set; }
         public string Comentario { get; set; }
