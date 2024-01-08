@@ -4,6 +4,6 @@ namespace PeliculasAPI.Servicios
 {
     public interface IReseñaServicio
     {
-        Task<List<ReseñaModelo>> ObtenerTodo(PaginacionModel paginacionModel);
+        Task<List<ReseñaModelo>> ObtenerTodo( int peliculaId, PaginacionModel paginacionModel);
     }
 }

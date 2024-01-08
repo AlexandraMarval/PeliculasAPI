@@ -87,7 +87,7 @@ namespace PeliculasAPI.Servicios
 
         public async Task<List<UsuarioModelo>> ObtenerTodo(PaginacionModel paginacionModel)
         {
-            var usuarios = await repositorio.ObtenerTodo(x => x.Email, paginacionModel);
+            var usuarios = await repositorio.ObtenerTodoPaginado(x => true, x => x.Email, paginacionModel);
 
             return mapper.Map<List<UsuarioModelo>>(usuarios);
         }

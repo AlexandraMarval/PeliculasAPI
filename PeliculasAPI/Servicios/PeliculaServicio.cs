@@ -66,7 +66,7 @@ namespace PeliculasAPI.Servicios
 
         public async Task<PeliculaModelo> ActualizarPelicula(int id, ActualizarPeliculaModelo actualizarPeliculaModelo)
         {
-            var peliculaDB = await repositorio.BuscarPorId(id);
+            var peliculaDB = await repositorio.BuscarPeliculaYRelacionesPorIdAsync(id);
 
             if (peliculaDB != null)
             {

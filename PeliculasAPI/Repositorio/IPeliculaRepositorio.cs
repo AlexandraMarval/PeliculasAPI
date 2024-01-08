@@ -4,6 +4,6 @@ namespace PeliculasAPI.Repositorio
 {
     public interface IPeliculaRepositorio : IRepositorio<PeliculaEntidad>
     {
-        Task<PeliculaEntidad> BuscarPorId(int id);
+        Task<PeliculaEntidad> BuscarPeliculaYRelacionesPorIdAsync(int id);
     }
 }

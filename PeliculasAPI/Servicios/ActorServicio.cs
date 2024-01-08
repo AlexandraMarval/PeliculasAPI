@@ -27,12 +27,11 @@ namespace PeliculasAPI.Servicios
 
         public async Task<List<ActorModel>> ObtenerActores(PaginacionModel paginacionModel)
         {
-            var queryable = await repositorio.AsQueryable();
+            var entidadesPaginadas = await repositorio.ObtenerTodoPaginado(x => true, x => x.Id.ToString(), paginacionModel);
 
-            await httpContextAccessor.HttpContext.InsertarParametrosPaginacion(queryable, paginacionModel.cantidadRegistrosPorPagina);
-
-            var actor = await queryable.Paginar(paginacionModel).ToListAsync();
-            var actorModel = mapper.Map<List<ActorModel>>(actor);
+            var actorModel = mapper.Map<List<ActorModel>>(entidadesPaginadas.Entidades);
+            httpContextAccessor.HttpContext.Response.Headers.Add("cantidadPaginas", entidadesPaginadas.CantidadPaginas.ToString());
+            
             return actorModel;
         }      
 

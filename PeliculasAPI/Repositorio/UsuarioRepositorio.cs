@@ -17,12 +17,5 @@ namespace PeliculasAPI.Repositorio
         {
             return await dbContext.Roles.Select(x => x.Name).ToListAsync();
         }
-
-        public async Task<List<IdentityUser>> ObtenerTodo(Expression<Func<IdentityUser, string>> expressionOrder, PaginacionModel paginacionModel)
-        {
-            var query = dbContext.Users.OrderBy(x => x.Email);
-            var users = await query.Paginar(paginacionModel).ToListAsync();
-            return users;
-        }
     }
 }

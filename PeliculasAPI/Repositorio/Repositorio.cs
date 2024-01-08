@@ -1,10 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Conventions;
-using PeliculasAPI.Ayudantes;
+﻿using Microsoft.EntityFrameworkCore;
 using PeliculasAPI.Context;
-using PeliculasAPI.Entidades;
 using PeliculasAPI.Modelos;
+using System.Linq.Expressions;
+using System.Runtime.CompilerServices;
 
 namespace PeliculasAPI.Repositorio
 {
@@ -54,6 +52,29 @@ namespace PeliculasAPI.Repositorio
         public Task<IQueryable<TEntity>> AsQueryable()
         {
             return Task.FromResult(dbSet.AsQueryable());
+        }
+
+        public async Task<EntidadPaginadaModelo<TEntity>> ObtenerTodoPaginado(Expression<Func<TEntity, bool>> expressionFilter, Expression<Func<TEntity, string>> expressionOrder, PaginacionModel paginacionModel)
+        {
+            var query = dbSet.Where(expressionFilter);
+            double cantidadTotalRegistros = await query.CountAsync();
+            var skip = paginacionModel.Pagina - 1 * paginacionModel.CantidadRegistrosPorPagina;
+
+            var entities = await query
+                .OrderBy(expressionOrder)
+                .Skip(skip)
+                .Take(paginacionModel.CantidadRegistrosPorPagina).ToListAsync();
+
+            var entidadesPaginadas = new EntidadPaginadaModelo<TEntity>
+            {
+                Entidades = entities,
+                CantidadRegistros = cantidadTotalRegistros,
+                PaginaActual = paginacionModel.Pagina,
+                RegistrosPorPagina = paginacionModel.CantidadRegistrosPorPagina,
+                CantidadPaginas = Math.Ceiling(cantidadTotalRegistros / paginacionModel.CantidadRegistrosPorPagina)
+            };
+
+            return entidadesPaginadas;
         }
     }
 }

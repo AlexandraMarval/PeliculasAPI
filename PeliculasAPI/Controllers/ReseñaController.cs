@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PeliculasAPI.Modelos;
+using PeliculasAPI.Servicios;
 
 namespace PeliculasAPI.Controllers
 {
@@ -7,10 +9,11 @@ namespace PeliculasAPI.Controllers
     [Route("api/pelicula/{pelicula:int}/reseña")]
     public class ReseñaController : ControllerBase
     {
-        public ReseñaController()
-        {
-            
-        }
+        private readonly IReseñaServicio servicio;
 
+        public ReseñaController(IReseñaServicio servicio)
+        {
+            this.servicio = servicio;
+        }
     }
 }
