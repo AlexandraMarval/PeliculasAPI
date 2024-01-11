@@ -5,6 +5,6 @@ namespace PeliculasAPI.Repositorio
 {
     public interface IReseñaRepositorio : IRepositorio<ReseñaEntidad>
     {
-        Task<ReseñaEntidad> BuscarUsuarioYRelacionesPorIdAsync(int id, PaginacionModel paginacionModel);
+        Task<EntidadPaginadaModelo<ReseñaEntidad>> BuscarReseñasDePeliculaAsync(int peliculaId, PaginacionModel paginacionModel);
     }
 }

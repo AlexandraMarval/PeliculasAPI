@@ -4,11 +4,11 @@ namespace PeliculasAPI.Servicios
 {
     public interface ISalaDeCineServicio
     {
-        Task<List<SalaDeCineModelo>> ObtenerSalaDeCine();
-        Task<SalaDeCineModelo> ObtenerPorId(int id);
-        Task<SalaDeCineModelo> CrearSalaDeCine(CrearSalaDeCineModelo crearSalaDeCineModelo);
-        Task<SalaDeCineModelo> ActualizarSalaDeCine(int id, ActualizarSalaDeCineModelo actualizarSalaDeCineModelo);
-        Task<List<SalaDeCineCercanoModelo>> Cercano(SalaDeCineCercanoFiltroModelo cineCercanoFiltroModelo);
-        Task<SalaDeCineModelo> EliminarSalaDeCine(int id);
+        public Task<List<SalaDeCineModelo>> ObtenerSalaDeCine();
+        public Task<SalaDeCineModelo> ObtenerPorId(int id);
+        public Task<SalaDeCineModelo> CrearSalaDeCine(CrearSalaDeCineModelo crearSalaDeCineModelo);
+        public Task<SalaDeCineModelo> ActualizarSalaDeCine(int id, ActualizarSalaDeCineModelo actualizarSalaDeCineModelo);
+        public Task<List<SalaDeCineCercanoModelo>> Cercano(SalaDeCineCercanoFiltroModelo cineCercanoFiltroModelo);
+        public Task<SalaDeCineModelo> EliminarSalaDeCine(int id);
     }
 }

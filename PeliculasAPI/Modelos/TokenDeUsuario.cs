@@ -1,6 +1,6 @@
 ﻿namespace PeliculasAPI.Modelos
 {
-    public class RespuestasAutenticacionModelo
+    public class TokenDeUsuario
     {
         public string Token { get; set; }
         public DateTime Expiracion { get; set; }

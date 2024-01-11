@@ -28,7 +28,7 @@ namespace PeliculasAPI.Servicios
             this.mapper = mapper;
         }
 
-        public async Task<RespuestasAutenticacionModelo> Registrar(CredencialesUsuario credencialesUsuario)
+        public async Task<TokenDeUsuario> Registrar(CredencialesUsuario credencialesUsuario)
         {
             var usuario = new IdentityUser { UserName = credencialesUsuario.Email, Email = credencialesUsuario.Email };
             var resultado = await userManager.CreateAsync(usuario,credencialesUsuario.Password);
@@ -43,7 +43,7 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        public async Task<RespuestasAutenticacionModelo> Login(CredencialesUsuario credencialesUsuario)
+        public async Task<TokenDeUsuario> Login(CredencialesUsuario credencialesUsuario)
         {
             var resultado = await signInManager.PasswordSignInAsync(credencialesUsuario.Email, credencialesUsuario.Password, isPersistent: false, lockoutOnFailure: false);
 
@@ -57,7 +57,7 @@ namespace PeliculasAPI.Servicios
             }
         }
 
-        private async Task<RespuestasAutenticacionModelo> ConstruirToken(CredencialesUsuario credencialesUsuario)
+        private async Task<TokenDeUsuario> ConstruirToken(CredencialesUsuario credencialesUsuario)
         {
             var claims = new List<Claim>
             {
@@ -65,9 +65,11 @@ namespace PeliculasAPI.Servicios
                 new Claim(ClaimTypes.Email, credencialesUsuario.Email)              
             };
 
-            var usuario = await userManager.FindByEmailAsync(credencialesUsuario.Email);
+            var identidadDelUsuario = await userManager.FindByEmailAsync(credencialesUsuario.Email);
 
-            var claimsDB = await userManager.GetClaimsAsync(usuario);
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, identidadDelUsuario.Id));
+
+            var claimsDB = await userManager.GetClaimsAsync(identidadDelUsuario);
 
             claims.AddRange(claimsDB);
 
@@ -78,7 +80,7 @@ namespace PeliculasAPI.Servicios
 
             var securityToken = new JwtSecurityToken(issuer: null, audience: null, claims: claims, expires: expiracion, signingCredentials: credenciales);
 
-            return new RespuestasAutenticacionModelo()
+            return new TokenDeUsuario()
             {
                 Token = new JwtSecurityTokenHandler().WriteToken(securityToken),
                 Expiracion = expiracion

@@ -28,14 +28,14 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost("registrar", Name = "registrarUsuario")] // api/cuentas/registrar
-        public async Task<ActionResult<RespuestasAutenticacionModelo>> Registrar(CredencialesUsuario credencialesUsuario)
+        public async Task<ActionResult<TokenDeUsuario>> Registrar(CredencialesUsuario credencialesUsuario)
         {
             var usuario = await servicio.Registrar(credencialesUsuario);
             return Ok(usuario);
         }
 
         [HttpPost("login", Name = "loginUsuario")]
-        public async Task<ActionResult<RespuestasAutenticacionModelo>> Login([FromBody]CredencialesUsuario credencialesUsuario)
+        public async Task<ActionResult<TokenDeUsuario>> Login([FromBody]CredencialesUsuario credencialesUsuario)
         {
             var resultado = await servicio.Login(credencialesUsuario);
             if (resultado == null)

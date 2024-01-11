@@ -13,7 +13,6 @@ namespace PeliculasAPI.Controllers
     public class ActoresController : ControllerBase
     {
         private readonly IActorServicio servicio;
-        private readonly IAlmacenadorArchivos almacenadorArchivos;
 
         public ActoresController(IActorServicio servicio)
         {
