@@ -9,7 +9,7 @@ namespace PeliculasAPI.Controllers
 {
     [ApiController]
     [Route("api/pelicula")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class PeliculasController : ControllerBase
     {
         private readonly IPeliculaServicio servicio;

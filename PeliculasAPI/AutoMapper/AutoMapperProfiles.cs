@@ -36,8 +36,11 @@ namespace PeliculasAPI.AutoMapper
             
             CreateMap<ActualizarSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
 
+            CreateMap<ReseñaEntidad, ReseñaModelo>().ForMember(x => x.NombreUsuario, x => x.MapFrom(y => y.Usuario.UserName));
+            CreateMap<CrearReseñaModelo, ReseñaEntidad>();
+            CreateMap<ReseñaModelo, ReseñaEntidad>();
+            CreateMap<ActualizarReseñaModelo, ReseñaEntidad>().ReverseMap();
             CreateMap<IdentityUser, UsuarioModelo>();
-            CreateMap<ReseñaEntidad, ReseñaModelo>().ReverseMap();
         }
 
         private List<PeliculasCategoriasEntidad> MapPeliculasCategorias(CrearPeliculaModelo crearPeliculaModelo, PeliculaEntidad peliculaEntidad)

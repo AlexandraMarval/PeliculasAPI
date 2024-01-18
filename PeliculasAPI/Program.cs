@@ -7,6 +7,7 @@ using Microsoft.OpenApi.Models;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using PeliculasAPI.AutoMapper;
+using PeliculasAPI.Ayudantes;
 using PeliculasAPI.Context;
 using PeliculasAPI.Repositorio;
 using PeliculasAPI.Servicios;
@@ -80,7 +81,10 @@ builder.Services
     .AddTransient<ISalaDeCineRepositorio, SalaDeCineRepositorio>()
     .AddTransient<ICuentaServicio, CuentaServicio>()
     .AddTransient<IUsuarioRepositorio, UsuarioRepositorio>()
+    .AddTransient<IReseñaServicio, ReseñaServicio>()
+    .AddTransient<IReseñaRepositorio, ReseñaRepositorio>()
     .AddTransient(typeof(IRepositorio<>), typeof(Repositorio<>));
+builder.Services.AddScoped<PeliculaExisteAttributo>();
 //builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivosAzure>();
 builder.Services.AddTransient<IAlmacenadorArchivos, AlmacenadorArchivoLocal>();
 builder.Services.AddHttpContextAccessor();

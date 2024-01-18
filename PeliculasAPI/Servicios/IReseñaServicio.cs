@@ -6,6 +6,7 @@ namespace PeliculasAPI.Servicios
     {
         public Task<List<ReseñaModelo>> ObtenerTodasLasReseñas( int peliculaId, PaginacionModel paginacionModel);
         public Task<ReseñaModelo> CrearUnaReseña(int peliculaId, CrearReseñaModelo crearReseñaModelo);
-        public Task<ReseñaModelo> ActualizarReseña( int reseñaId, ActualizarReseñaModelo actualizarReseñaModelo);
+        public Task<ReseñaModelo> ActualizarReseña(int peliculaId, int reseñaId, ActualizarReseñaModelo actualizarReseñaModelo);
+        public Task<ReseñaModelo> EliminarReseña(int reseñaId);
     }
 }
