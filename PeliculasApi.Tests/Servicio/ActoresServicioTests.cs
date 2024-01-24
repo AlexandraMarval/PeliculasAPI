@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Moq;
 using PeliculasApi.Tests.PruebasUnitarias;
 using PeliculasAPI.Entidades;
@@ -106,14 +107,21 @@ namespace PeliculasApi.Tests.Servicio
 
             var actor = new CrearActorModel() { Nombre = "Alexandra", FechaDeNacimiento = DateTime.Now };
 
-
-            var context2 = ConstruirContext(nombreBD);
-            var repositorio = new Repositorio<ActorEntidad>(context2);
+            var repositorio = new Repositorio<ActorEntidad>(context);
 
             //Act Ejecutar
             var servicio = new ActoresServicio(mapper, repositorio, mockAlmacenadorArchivos.Object, mockHttpContextAccessor.Object);
+              var respuesta = servicio.CrearActor(actor);
 
+            // assert  Verificar
+            var actorEsperado = new[] { new { actor.Nombre, actor.FechaDeNacimiento } };
+            respuesta.Should()
+                .NotBeNull()
+                .And.BeEquivalentTo(respuesta);
 
+            var context2 = ConstruirContext(nombreBD);
+            var listado = await context2.Actores.ToListAsync();
+            listado.Should().BeEquivalentTo(actorEsperado).And.NotBeNull (listado[0].Foto);
         }
     }
 }
