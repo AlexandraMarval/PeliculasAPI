@@ -74,7 +74,7 @@ builder.Services
 
     })
     .AddTransient<ICategoriaServicio, CategoriaServicio>()
-    .AddTransient<IActorServicio, ActorServicio>()
+    .AddTransient<IActorServicio, ActoresServicio>()
     .AddTransient<IPeliculaServicio, PeliculaServicio>()
     .AddTransient<IPeliculaRepositorio, PeliculaRepositorio>()
     .AddTransient<ISalaDeCineServicio, SalaDeCineServicio>()

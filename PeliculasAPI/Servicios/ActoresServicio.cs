@@ -9,7 +9,7 @@ using PeliculasAPI.Repositorio;
 
 namespace PeliculasAPI.Servicios
 {
-    public class ActorServicio : IActorServicio
+    public class ActoresServicio : IActorServicio
     {       
         private readonly IMapper mapper;
         private readonly IRepositorio<ActorEntidad> repositorio;
@@ -17,7 +17,7 @@ namespace PeliculasAPI.Servicios
         private readonly IHttpContextAccessor httpContextAccessor;
         private readonly string contenedor = "actores";
 
-        public ActorServicio(IMapper mapper,IRepositorio<ActorEntidad> repositorio, IAlmacenadorArchivos almacenadorArchivos, IHttpContextAccessor httpContextAccessor) 
+        public ActoresServicio(IMapper mapper,IRepositorio<ActorEntidad> repositorio, IAlmacenadorArchivos almacenadorArchivos, IHttpContextAccessor httpContextAccessor) 
         {          
             this.mapper = mapper;
             this.repositorio = repositorio;

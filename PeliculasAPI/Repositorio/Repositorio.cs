@@ -58,7 +58,7 @@ namespace PeliculasAPI.Repositorio
         {
             var query = dbSet.Where(expressionFilter);
             double cantidadTotalRegistros = await query.CountAsync();
-            var skip = paginacionModel.Pagina - 1 * paginacionModel.CantidadRegistrosPorPagina;
+            var skip = (paginacionModel.Pagina - 1) * paginacionModel.CantidadRegistrosPorPagina;
 
             var entities = await query
                 .OrderBy(expressionOrder)

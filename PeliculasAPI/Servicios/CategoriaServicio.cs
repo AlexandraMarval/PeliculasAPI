@@ -26,9 +26,10 @@ namespace PeliculasAPI.Servicios
         }
         public async Task<CategoriaModelo> ObtenerCategoriaPorId(int id)
         {
-            if (id == null)
+            var categoria = await repositorio.ObtenerPorId(id);
+
+            if (categoria != null)
             {
-                var categoria = await repositorio.ObtenerPorId(id);
                 var categoriaModel = mapper.Map<CategoriaModelo>(categoria);
                 return categoriaModel;
             }
