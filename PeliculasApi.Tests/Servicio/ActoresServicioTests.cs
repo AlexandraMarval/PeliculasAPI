@@ -18,6 +18,15 @@ namespace PeliculasApi.Tests.Servicio
 {
     public class ActoresServicioTests : BasePruebas
     {
+        private Mock<IHttpContextAccessor> mockHttpContextAccessor;
+        private Mock<IAlmacenadorArchivos> mockAlmacenadorArchivos;
+
+        public ActoresServicioTests()
+        {
+            mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+            mockAlmacenadorArchivos = new Mock<IAlmacenadorArchivos>();
+        }
+
         [Fact]
         public async Task ObtenerPersonasPaginadas()
         {
@@ -26,7 +35,6 @@ namespace PeliculasApi.Tests.Servicio
             var nombreBD = Guid.NewGuid().ToString();
             var context = ConstruirContext(nombreBD);
             var mapper = ConfigurarAutoMapper();
-            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
             var mockHttpContext = new DefaultHttpContext();
             mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
 
@@ -64,7 +72,7 @@ namespace PeliculasApi.Tests.Servicio
             var nombreBD = Guid.NewGuid().ToString();
             var context = ConstruirContext(nombreBD);
             var mapper = ConfigurarAutoMapper();
-            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
             var mockHttpContext = new DefaultHttpContext();
             mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
 
@@ -98,11 +106,10 @@ namespace PeliculasApi.Tests.Servicio
             var nombreBD = Guid.NewGuid().ToString();
             var context = ConstruirContext(nombreBD);
             var mapper = ConfigurarAutoMapper();
-            var mockHttpContextAccessor = new Mock<IHttpContextAccessor>();
+
             var mockHttpContext = new DefaultHttpContext();
             mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
 
-            var mockAlmacenadorArchivos = new Mock<IAlmacenadorArchivos>();
             mockAlmacenadorArchivos.Setup(x => x.GuardarArchivo(null, null, null, null)).Returns(Task.FromResult("url"));
 
             var actor = new CrearActorModel() { Nombre = "Alexandra", FechaDeNacimiento = DateTime.Now };
@@ -122,6 +129,36 @@ namespace PeliculasApi.Tests.Servicio
             var context2 = ConstruirContext(nombreBD);
             var listado = await context2.Actores.ToListAsync();
             listado.Should().BeEquivalentTo(actorEsperado).And.NotBeNull (listado[0].Foto);
+        }
+
+        [Fact]
+        public async Task CrearActorConFoto()
+        {
+            //arrange Preparar
+            var nombreBD = Guid.NewGuid().ToString();
+            var context = ConstruirContext(nombreBD);
+            var mapper = ConfigurarAutoMapper();
+
+            var mockHttpContext = new DefaultHttpContext();
+            mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
+
+            var content = Encoding.UTF8.GetBytes("Imagen de prueba");
+            var archivo = new FormFile (new MemoryStream(content), 0, content.Length, "Data", "Imagen.jpg");
+            archivo.Headers = new HeaderDictionary();
+            archivo.ContentType = "image/jpg";
+
+            var actorEsperado = new CrearActorModel { Nombre = "nuevo actor", FechaDeNacimiento = DateTime.Now, Foto = archivo };
+
+            mockAlmacenadorArchivos.Setup(x => x.GuardarArchivo(content, "jpg", "actores", archivo.ContentType)).Returns(Task.FromResult("url"));
+
+            var repositorio = new Repositorio<ActorEntidad>(context);
+
+            //Act Ejecutar
+            var servicio = new ActoresServicio(mapper, repositorio,mockAlmacenadorArchivos.Object, mockHttpContextAccessor.Object);
+            var resultado = await servicio.CrearActor(actorEsperado);
+
+            // assert  Verificar
+            resultado.Should().BeEquivalentTo(actorEsperado, options => options.Excluding(actor => actor.Foto));
         }
     }
 }
