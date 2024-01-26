@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using PeliculasApi.Tests.PruebasUnitarias;
@@ -159,6 +160,30 @@ namespace PeliculasApi.Tests.Servicio
 
             // assert  Verificar
             resultado.Should().BeEquivalentTo(actorEsperado, options => options.Excluding(actor => actor.Foto));
+        }
+
+        [Fact]
+        public async Task PathRetorna404SiActorNoExiste()
+        {
+            //arrange Preparar
+            var nombreBD = Guid.NewGuid().ToString();
+            var context = ConstruirContext(nombreBD);
+            var mapper = ConfigurarAutoMapper();
+            var mockHttpContext = new DefaultHttpContext();
+            mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
+
+            var repositorio = new Repositorio<ActorEntidad>(context);
+
+            //Act Ejecutar
+            var servicio = new ActoresServicio(mapper, repositorio, mockAlmacenadorArchivos.Object, mockHttpContextAccessor.Object);
+            var patchDoc = new JsonPatchDocument<ActorPatchModelo>();
+            var  accion = () => servicio.ActualizarActorPatchId(1, patchDoc);
+
+            // assert  Verificar
+            await accion.Should().ThrowAsync<Exception>()
+               .WithMessage("No se encontró ninguna entidad con el id proporcionado");
+
+
         }
     }
 }
