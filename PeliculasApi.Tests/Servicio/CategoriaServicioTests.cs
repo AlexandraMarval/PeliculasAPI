@@ -25,8 +25,8 @@ namespace PeliculasApi.Tests.Servicio
             var context = ConstruirContext(nombreBD);
             var mapper = ConfigurarAutoMapper();
 
-            context.Categorias.Add(new CategoriaEntidad() { Nombre = "Categoria 1" });
-            context.Categorias.Add(new CategoriaEntidad() { Nombre = "Categoria 2" });
+            context.Categorias.Add(new CategoriaEntidad() { Nombre = "Categoria 1", PeliculasCategorias = null });
+            context.Categorias.Add(new CategoriaEntidad() { Nombre = "Categoria 2", PeliculasCategorias = null });
 
             await context.SaveChangesAsync();
 

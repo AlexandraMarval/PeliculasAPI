@@ -27,6 +27,7 @@ namespace PeliculasAPI.Servicios
                 <List<SalaDeCineModelo>>(salaDeCine);
             return salaDeCineModelo;
         }
+
         public async Task<SalaDeCineModelo> ObtenerPorId(int id)
         {
             var salaDeCine = await repositorio.ObtenerPorId(id);

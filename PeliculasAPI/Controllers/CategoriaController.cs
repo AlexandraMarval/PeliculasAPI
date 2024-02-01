@@ -11,7 +11,7 @@ namespace PeliculasAPI.Controllers
 {
     [ApiController]
     [Route("api/categoria")]
-    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+    //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     public class CategoriaController : ControllerBase
     {
         private readonly ICategoriaServicio servicio;
@@ -63,15 +63,5 @@ namespace PeliculasAPI.Controllers
             var categoria = await servicio.EliminarCategoria(id);
             return Ok(categoria);
         }
-
-        //[HttpPost]
-        //public IActionResult Post(CategoriaCreateModel categoriaCreateModel)
-        //{
-        //    var categoriaModel = new CategoriaModel
-        //    {
-        //       Nombre = categoriaCreateModel.Nombre,
-        //    };
-        //   return Ok(categoriaModel);
-        //}
     }
 }

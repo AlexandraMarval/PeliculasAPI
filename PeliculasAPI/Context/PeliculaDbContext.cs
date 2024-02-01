@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using NetTopologySuite;
+using NetTopologySuite.Geometries;
 using PeliculasAPI.Entidades;
 using System.Security.Claims;
 
@@ -45,7 +46,7 @@ namespace PeliculasAPI.Context
 
             var contraseñaHasher = new PasswordHasher<IdentityUser>();
 
-            var usuarioNombre = "ALEXANDRAM@HOTMAIL.COM";
+            var usuarioNombre = "alexandraM@Hotmail.com";
 
             var usuarioAdmin = new IdentityUser()
             {
@@ -73,7 +74,52 @@ namespace PeliculasAPI.Context
             //    });
 
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
+
+            modelBuilder.Entity<SalaDeCineEntidad>()
+              .HasData(new List<SalaDeCineEntidad>
+              {
+                    //new SalaDeCineEntidad{Id = 3, Nombre = "Palafox", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-0.88257091473750082, 41.650913765831994))},
+                    new SalaDeCineEntidad{Id = 4, Nombre = "Cines Unidos", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-66.917333,  10.504223))},
+                    new SalaDeCineEntidad{Id = 5, Nombre = "Cinex", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-66.8773,  10.504223))},
+                    new SalaDeCineEntidad{Id = 6, Nombre = "Cines Aragonia", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-0.908871,  41.639305))}
+              });
+
+            var acción = new CategoriaEntidad() { Id = 1, Nombre = "Acción" };
+            var romance = new CategoriaEntidad() { Id = 2, Nombre = "Romance" };
+            var terror = new CategoriaEntidad() { Id = 3, Nombre = "Terror" };
+            var infantil = new CategoriaEntidad() { Id = 4, Nombre = "Infantil" };
+
+             modelBuilder.Entity<CategoriaEntidad>()
+                .HasData(new List<CategoriaEntidad>
+                {
+                    acción, romance, terror, infantil
+                });
+
+            var samuelJackson = new ActorEntidad { Id = 1, Nombre = "Samuel L. Jackson", FechaDeNacimiento = new DateTime(1948, 12, 21) };
+            var tomHolland = new ActorEntidad() { Id = 2, Nombre = "Tom Holland", FechaDeNacimiento = new DateTime(1996, 6, 1) };
+            var tobeyMaguire = new ActorEntidad() { Id = 7, Nombre = "Tobey Maguire", FechaDeNacimiento = new DateTime(1975, 06, 1) };
+
+            modelBuilder.Entity<ActorEntidad>()
+               .HasData(new List<ActorEntidad>
+               {
+                    samuelJackson, tomHolland, tobeyMaguire
+               });
+
+            var endgame = new PeliculaEntidad()
+            {
+                Id = 1,
+                Titulo = "SPIDER-MAN: NO WAY HOME",
+                EnCine = true,
+                FechaEstreno = new DateTime(2019, 06, 28)
+            };
+
+            modelBuilder.Entity<PeliculaEntidad>()
+               .HasData(new List<PeliculaEntidad>
+               {
+                    endgame
+               });
         }
+
         public PeliculaDbContext(DbContextOptions options) : base(options) { }    
     }
 }

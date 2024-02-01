@@ -1,6 +1,7 @@
 ﻿using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
+using Microsoft.AspNetCore.JsonPatch.Operations;
 using Microsoft.EntityFrameworkCore;
 using Moq;
 using PeliculasApi.Tests.PruebasUnitarias;
@@ -8,11 +9,7 @@ using PeliculasAPI.Entidades;
 using PeliculasAPI.Modelos;
 using PeliculasAPI.Repositorio;
 using PeliculasAPI.Servicios;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace PeliculasApi.Tests.Servicio
@@ -169,8 +166,7 @@ namespace PeliculasApi.Tests.Servicio
             var nombreBD = Guid.NewGuid().ToString();
             var context = ConstruirContext(nombreBD);
             var mapper = ConfigurarAutoMapper();
-            var mockHttpContext = new DefaultHttpContext();
-            mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
+           
 
             var repositorio = new Repositorio<ActorEntidad>(context);
 
@@ -180,10 +176,59 @@ namespace PeliculasApi.Tests.Servicio
             var  accion = () => servicio.ActualizarActorPatchId(1, patchDoc);
 
             // assert  Verificar
+            accion.Should().NotBeNull();
             await accion.Should().ThrowAsync<Exception>()
                .WithMessage("No se encontró ninguna entidad con el id proporcionado");
+        }
 
+        [Fact]
+        public async Task PatchActualizaUnSoloCampo()
+        {
+            //arrange Preparar
+            var nombreBD = Guid.NewGuid().ToString();
+            var context = ConstruirContext(nombreBD);
+            var mapper = ConfigurarAutoMapper();
 
+            var mockHttpContext = new DefaultHttpContext();
+            mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
+
+            var fechaDeNacimiento = DateTime.Now;
+            var actor = new ActorEntidad() { Nombre = "Alexandra", FechaDeNacimiento = fechaDeNacimiento };
+            context.Add(actor);
+            await context.SaveChangesAsync();
+
+            var context2 = ConstruirContext(nombreBD);
+            var repositorio = new Repositorio<ActorEntidad>(context2);
+            //Act Ejecutar
+            var servicio = new ActoresServicio(mapper, repositorio, mockAlmacenadorArchivos.Object, mockHttpContextAccessor.Object);
+
+            var patchDoc = new JsonPatchDocument<ActorPatchModelo>();
+            patchDoc.Operations.Add(new Operation<ActorPatchModelo>("replace", "/nombre", null, "Henksando"));
+
+            var resultadoEsperado = await servicio.ActualizarActorPatchId(1,patchDoc);
+
+            var context3 = ConstruirContext(nombreBD);
+            var actorDB = await context3.Actores.FirstAsync();
+
+            // assert  Verificar
+           Equals("Henksando", actorDB.Nombre);
+           Equals(fechaDeNacimiento, actorDB.FechaDeNacimiento);
+
+        }
+
+        private ActoresServicio ConstruirServicio(string nombreBD)
+        {
+            var context = ConstruirContext(nombreBD);
+            var mapper = ConfigurarAutoMapper();
+
+            var repositorio = new Repositorio<ActorEntidad>(context);
+
+            var mockHttpContext = new DefaultHttpContext();
+            mockHttpContextAccessor.Setup(x => x.HttpContext).Returns(mockHttpContext);
+
+            mockAlmacenadorArchivos.Setup(x => x.GuardarArchivo(null, null, null, null)).Returns(Task.FromResult("url"));
+
+            return new ActoresServicio(mapper, repositorio, mockAlmacenadorArchivos.Object, mockHttpContextAccessor.Object);
         }
     }
 }
