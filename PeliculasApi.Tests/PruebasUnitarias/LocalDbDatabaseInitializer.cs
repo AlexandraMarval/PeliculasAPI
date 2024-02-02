@@ -10,7 +10,7 @@ namespace PeliculasApi.Tests.PruebasUnitarias
 {
     public class LocalDbDatabaseInitializer
     {
-        private static readonly string _dbName = "PruebasDeIntegracion";
+        private static readonly string _dbName = "PruebaDeIntegracion";
 
         [AssemblyInitialize]
         public static void Initialize(TestContext testContext)
@@ -110,7 +110,7 @@ namespace PeliculasApi.Tests.PruebasUnitarias
         static string Master =>
            new SqlConnectionStringBuilder
            {
-               DataSource = @"(LocalDB)\MSSQLLocalDB",
+               DataSource = @"(localdb)\\MSSQLLocalDB",
                InitialCatalog = "master",
                IntegratedSecurity = true
            }.ConnectionString;

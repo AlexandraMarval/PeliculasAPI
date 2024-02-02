@@ -10,6 +10,8 @@ namespace PeliculasAPI.Context
 {
     public class PeliculaDbContext : IdentityDbContext
     {
+
+        public PeliculaDbContext(DbContextOptions options) : base(options) { }
         public DbSet<CategoriaEntidad> Categorias { get; set; }
         public DbSet<ActorEntidad> Actores { get; set; }
         public DbSet<PeliculaEntidad> Peliculas { get; set; }
@@ -46,7 +48,7 @@ namespace PeliculasAPI.Context
 
             var contraseñaHasher = new PasswordHasher<IdentityUser>();
 
-            var usuarioNombre = "alexandraM@Hotmail.com";
+            var usuarioNombre = "AlexandraM@Hotmail.com";
 
             var usuarioAdmin = new IdentityUser()
             {
@@ -78,9 +80,12 @@ namespace PeliculasAPI.Context
             modelBuilder.Entity<SalaDeCineEntidad>()
               .HasData(new List<SalaDeCineEntidad>
               {
-                    //new SalaDeCineEntidad{Id = 3, Nombre = "Palafox", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-0.88257091473750082, 41.650913765831994))},
+                    new SalaDeCineEntidad{Id = 3, Nombre = "palafox", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-0.88257091473750082, 41.650913765831994))},
+
                     new SalaDeCineEntidad{Id = 4, Nombre = "Cines Unidos", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-66.917333,  10.504223))},
+
                     new SalaDeCineEntidad{Id = 5, Nombre = "Cinex", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-66.8773,  10.504223))},
+
                     new SalaDeCineEntidad{Id = 6, Nombre = "Cines Aragonia", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-0.908871,  41.639305))}
               });
 
@@ -118,8 +123,6 @@ namespace PeliculasAPI.Context
                {
                     endgame
                });
-        }
-
-        public PeliculaDbContext(DbContextOptions options) : base(options) { }    
+        }   
     }
 }

@@ -61,7 +61,7 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpPost("AsignarRol")]
-        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+        //[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> AsignarRol(EditarRolModelo editarRolModelo)
         {
             var user = await servicio.AsignarRol(editarRolModelo);

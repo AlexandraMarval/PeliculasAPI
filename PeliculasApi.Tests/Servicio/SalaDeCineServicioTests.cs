@@ -1,15 +1,12 @@
-﻿using FluentAssertions;
+﻿
+using FluentAssertions;
 using NetTopologySuite;
 using NetTopologySuite.Geometries;
 using PeliculasApi.Tests.PruebasUnitarias;
 using PeliculasAPI.Entidades;
+using PeliculasAPI.Modelos;
 using PeliculasAPI.Repositorio;
 using PeliculasAPI.Servicios;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace PeliculasApi.Tests.Servicio
@@ -46,19 +43,42 @@ namespace PeliculasApi.Tests.Servicio
         //[Fact]
         //public async Task ObtenerSalaDeCineAskilometrosOMenos()
         //{
+
+        //    //arrange Preparar
         //    var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
         //    using (var context = LocalDbDatabaseInitializer.GetDbContextLocalDb(false))
         //    {
         //        var salasDeCine = new List<SalaDeCineEntidad>()
         //        {
-        //                        new SalaDeCineEntidad { Id = 3, Nombre = "Palafox", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-0.88257091473750082, 41.650913765831994)) }
+        //             new SalaDeCineEntidad { Nombre = "Palafox", Ubicacion = geometryFactory.CreatePoint(new Coordinate(-0.88257091473750082, 41.650913765831994)) }
         //        };
 
         //        context.AddRange(salasDeCine);
         //        await context.SaveChangesAsync();
+
+        //        var filtro = new SalaDeCineCercanoFiltroModelo()
+        //        {
+        //            DistanciaEnKms = 5,
+        //            Longitud = 41.650913765831994,
+        //            Latitud = -0.88257091473750082
+        //        };
+                
+        //        //Act Ejecutar
+        //        using (var contexto = LocalDbDatabaseInitializer.GetDbContextLocalDb(false))
+        //        {
+        //            var mapper = ConfigurarAutoMapper();
+
+        //            var repositorio = new SalaDeCineRepositorio(contexto);
+
+        //            var servicio = new SalaDeCineServicio(mapper, repositorio, geometryFactory);
+        //            var resultado = await servicio.Cercano(filtro);
+
+        //            //Assert Verificar
+        //            resultado.Count.Should().Be(2);
+        //        }
+
         //    }
-           
         //}
     }
 }

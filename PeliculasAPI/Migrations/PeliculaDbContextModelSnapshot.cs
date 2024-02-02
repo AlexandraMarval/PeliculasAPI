@@ -233,7 +233,6 @@ namespace PeliculasAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Foto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Nombre")
@@ -244,6 +243,26 @@ namespace PeliculasAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Actores");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            FechaDeNacimiento = new DateTime(1948, 12, 21, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Samuel L. Jackson"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            FechaDeNacimiento = new DateTime(1996, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Tom Holland"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            FechaDeNacimiento = new DateTime(1975, 6, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Nombre = "Tobey Maguire"
+                        });
                 });
 
             modelBuilder.Entity("PeliculasAPI.Entidades.CategoriaEntidad", b =>
@@ -262,6 +281,28 @@ namespace PeliculasAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categorias");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Nombre = "Acción"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Nombre = "Romance"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Nombre = "Terror"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Nombre = "Infantil"
+                        });
                 });
 
             modelBuilder.Entity("PeliculasAPI.Entidades.PeliculaEntidad", b =>
@@ -279,7 +320,6 @@ namespace PeliculasAPI.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Poster")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Titulo")
@@ -290,6 +330,15 @@ namespace PeliculasAPI.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Peliculas");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            EnCine = true,
+                            FechaEstreno = new DateTime(2019, 6, 28, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Titulo = "SPIDER-MAN: NO WAY HOME"
+                        });
                 });
 
             modelBuilder.Entity("PeliculasAPI.Entidades.PeliculasActoresEntidad", b =>
@@ -392,12 +441,31 @@ namespace PeliculasAPI.Migrations
                         .HasColumnType("nvarchar(120)");
 
                     b.Property<Point>("Ubicacion")
-                        .IsRequired()
                         .HasColumnType("geography");
 
                     b.HasKey("Id");
 
                     b.ToTable("SalasDeCine");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 4,
+                            Nombre = "Cines Unidos",
+                            Ubicacion = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-66.917333 10.504223)")
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Nombre = "Cinex",
+                            Ubicacion = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-66.8773 10.504223)")
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Nombre = "Cines Aragonia",
+                            Ubicacion = (NetTopologySuite.Geometries.Point)new NetTopologySuite.IO.WKTReader().Read("SRID=4326;POINT (-0.908871 41.639305)")
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
