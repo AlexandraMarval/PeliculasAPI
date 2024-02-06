@@ -42,14 +42,14 @@ namespace PeliculasAPI.Servicios
 
             if (existeUnaPelicula == null)
             {
-                throw new Exception("No existe reseña");
+                throw new Exception("No existe una pelicula");
             }
 
             string usuarioId = ObtenerUsuarioId();
 
             var existeUnaReseña = await repositorio.BuscarPorCondicion(reseña => reseña.PeliculaId == peliculaId && reseña.UsuarioId == usuarioId);
 
-            if (!existeUnaReseña.Any())
+            if (existeUnaReseña.Any())
             {
                 throw new Exception("El usuario ya ha escrito una reseña de esta pelicula");
             }
@@ -60,8 +60,7 @@ namespace PeliculasAPI.Servicios
 
             await repositorio.Crear(reseña);
             var reseñaModelo = mapper.Map<ReseñaModelo>(reseña);
-            return reseñaModelo;
-            
+            return reseñaModelo;   
         }
 
         public async Task<ReseñaModelo> ActualizarReseña(int peliculaId, int reseñaId, [FromBody]ActualizarReseñaModelo actualizarReseñaModelo)

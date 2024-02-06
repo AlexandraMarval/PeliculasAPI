@@ -28,6 +28,7 @@ namespace PeliculasApi.Tests.Servicio
 
             var context2 = ConstruirContext(nombreBD);
             var repositorio = new SalaDeCineRepositorio(context2);
+
             var geometryFactory = NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326);
 
             await context.SaveChangesAsync();
