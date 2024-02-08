@@ -18,9 +18,11 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddSqlServer<PeliculaDbContext>(builder.Configuration.GetConnectionString("DefaultConnection"),
     sqlServerOptions => sqlServerOptions.UseNetTopologySuite());
+
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326));
+
 builder.Services.AddSingleton(provider =>
     new MapperConfiguration(config =>
     {
@@ -42,8 +44,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwt:Key"])),
         ClockSkew = TimeSpan.Zero
     });
-
-
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services
     .AddEndpointsApiExplorer()
@@ -107,3 +107,5 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
+
+public abstract partial class Program { }

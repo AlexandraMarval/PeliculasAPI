@@ -57,10 +57,15 @@ namespace PeliculasAPI.Controllers
             return Ok(categoria);
         }
 
-        [HttpDelete("id:int")]
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         public async Task<ActionResult> EliminarCategoria(int id)
         {
             var categoria = await servicio.EliminarCategoria(id);
+            if (categoria == null)
+            {
+                NotFound("No se encontro resultado");
+            }
             return Ok(categoria);
         }
     }
