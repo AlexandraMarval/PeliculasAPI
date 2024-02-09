@@ -29,7 +29,7 @@ namespace PeliculasAPI.Ayudantes
 
             if (existePelicula is null)
             {
-                context.Result = new NotFoundResult();
+                context.Result = new NoContentResult();
             }
             else
             {

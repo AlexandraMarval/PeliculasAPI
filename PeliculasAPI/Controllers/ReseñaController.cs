@@ -8,7 +8,7 @@ using PeliculasAPI.Servicios;
 namespace PeliculasAPI.Controllers
 {
     [ApiController]
-    [Route("api/pelicula/{peliculaId:int}/reseña")]
+    [Route("api/pelicula/{peliculaId:int}/[controller]")]
     [ServiceFilter(typeof(PeliculaExisteAttributo))]
     public class ReseñaController : ControllerBase
     {
@@ -20,12 +20,12 @@ namespace PeliculasAPI.Controllers
         }
 
         [HttpGet(Name = "ObtenerTodasLasReseñas")]
-        public async Task<ActionResult<List<ReseñaModelo>>> ObtenerTodo(int peliculaId,[FromQuery] PaginacionModel paginacionModel)
+        public async Task<ActionResult<List<ReseñaModelo>>> ObtenerTodo(int peliculaId, [FromQuery] PaginacionModel paginacionModel)
         {
-            var reseñaModelo = await servicio.ObtenerTodasLasReseñas(peliculaId, paginacionModel);
+            var reseñaModelo = await servicio.ObtenerReseñas(peliculaId, paginacionModel);
             if (reseñaModelo == null)
             {
-                NotFound();
+                return NoContent();
             }
             return Ok(reseñaModelo);
         }

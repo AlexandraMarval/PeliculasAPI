@@ -11,13 +11,18 @@ namespace PeliculasAPI.AutoMapper
     {
         public AutoMapperProfiles(GeometryFactory geometryFactory)
         {
+            // Mapper de Categoria
             CreateMap<CrearCategoriaModelo, CategoriaEntidad>().ReverseMap();
             CreateMap<CategoriaEntidad, CategoriaModelo>().ReverseMap();
             CreateMap<ActualizarCategoriaModelo, CategoriaEntidad>().ReverseMap();
+
+            // Mapper de Actores
             CreateMap<CrearActorModel, ActorEntidad>().ReverseMap();
             CreateMap<ActorEntidad, ActorModel>().ReverseMap();           
             CreateMap<ActualizarActorModelo, ActorEntidad>().ReverseMap().ForMember(x => x.Foto, options => options.Ignore());
             CreateMap<ActorPatchModelo, ActorEntidad>().ReverseMap();
+
+            // Mappper de Pelicula
             CreateMap<CrearPeliculaModelo, PeliculaEntidad>()
                 .ForMember(pelicula => pelicula.Poster, options => options.Ignore())
                 .ForMember(pelicula => pelicula.PeliculaCategorias, options => options.MapFrom(MapPeliculasCategorias))
@@ -25,6 +30,8 @@ namespace PeliculasAPI.AutoMapper
             CreateMap<PeliculaEntidad, PeliculaModelo>().ReverseMap();
             CreateMap<ActualizarPeliculaModelo, PeliculaEntidad>().ReverseMap();
             CreateMap<PeliculaPatchModelo, PeliculaEntidad>().ReverseMap();
+
+            // Mapper de Sala de Cine
             CreateMap<CrearSalaDeCineModelo, SalaDeCineEntidad>()
                   .ForMember(x => x.Ubicacion, x => x.MapFrom(y => geometryFactory.CreatePoint(new Coordinate(y.Longitud, y.Latitud))));
 
@@ -36,9 +43,13 @@ namespace PeliculasAPI.AutoMapper
             
             CreateMap<ActualizarSalaDeCineModelo, SalaDeCineEntidad>().ReverseMap();
 
+            // Mapper de Reseña
+
             CreateMap<ReseñaEntidad, ReseñaModelo>().ForMember(x => x.NombreUsuario, x => x.MapFrom(y => y.Usuario.UserName));
+
             CreateMap<CrearReseñaModelo, ReseñaEntidad>();
-            CreateMap<ReseñaModelo, ReseñaEntidad>();
+            CreateMap<ReseñaModelo, ReseñaEntidad>().ReverseMap();
+
             CreateMap<ActualizarReseñaModelo, ReseñaEntidad>().ReverseMap();
             CreateMap<IdentityUser, UsuarioModelo>();
         }

@@ -23,7 +23,7 @@ namespace PeliculasAPI.Servicios
             this.httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<List<ReseñaModelo>> ObtenerTodasLasReseñas(int peliculaId, PaginacionModel paginacionModel)
+        public async Task<List<ReseñaModelo>> ObtenerReseñas(int peliculaId, PaginacionModel paginacionModel)
         {
             var existePelicula = await peliculaRepositorio.BuscarPorId(peliculaId);
 
@@ -32,7 +32,9 @@ namespace PeliculasAPI.Servicios
                 throw new Exception();
             }
 
-            var reseñaModelo =  mapper.Map<List<ReseñaModelo>>(paginacionModel);
+            var reseñaPaginadas = await repositorio.ObtenerTodoPaginado(x => true, x => x.PeliculaId.ToString(), paginacionModel);
+
+            var reseñaModelo =  mapper.Map<List<ReseñaModelo>>(reseñaPaginadas.Entidades);
             return reseñaModelo;
         }
 
