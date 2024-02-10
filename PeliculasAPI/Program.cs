@@ -20,7 +20,7 @@ builder.Services.AddSqlServer<PeliculaDbContext>(builder.Configuration.GetConnec
     sqlServerOptions => sqlServerOptions.UseNetTopologySuite());
 
 builder.Services.AddAutoMapper(typeof(Program));
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers(options => options.Filters.Add(typeof(FiltroErrores))).AddNewtonsoftJson();
 builder.Services.AddSingleton<GeometryFactory>(NtsGeometryServices.Instance.CreateGeometryFactory(srid: 4326));
 
 builder.Services.AddSingleton(provider =>
